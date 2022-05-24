@@ -1,0 +1,34 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.box-new-user-form {
+  width: 550px;
+}
+
+@media only screen and (max-width: 786px) {
+  .box-new-user-form {
+    width: 80vw;
+  }
+}
+
+.css-1l05h56-MuiFormLabel-root-MuiInputLabel-root {
+  text-transform: capitalize;
+}
+.css-g8xom6-MuiInputBase-input-MuiInput-input.Mui-disabled {
+  font-weight: bold;
+  font-size: 18px;
+}
