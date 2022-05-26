@@ -5,4 +5,4 @@ function leaves() {
 }
 
 export default leaves;
-leaves.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+// leaves.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

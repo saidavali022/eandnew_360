@@ -15,4 +15,4 @@ const data = {
 export default function User() {
   return <List data={data} />;
 }
-User.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+// User.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

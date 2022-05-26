@@ -42,7 +42,7 @@ export default function LoginForm() {
       .then(function (response: any) {
         if (response.status === 200 && response.data.status === 200) {
           dispatch({ type: "login", payload: response.data });
-          router.push("/user");
+          router.push("/" + response.data.role);
           toast.success("success", {
             theme: "colored",
           });

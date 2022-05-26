@@ -296,4 +296,4 @@ const index = () => {
 };
 export default index;
 
-index.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+// index.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

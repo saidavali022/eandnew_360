@@ -5,7 +5,7 @@ import {
   getDetails,
   deleteDetailsById,
   updateTaskStatusByID,
-} from "../controller/tasks.controller";
+} from "../controllers/tasks.controller";
 import upload from "../modules/fileupload";
 
 const router = Router();

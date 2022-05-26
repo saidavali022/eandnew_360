@@ -12,7 +12,7 @@ import {
   getLettersByempId,
   createLetters,
   getLeavesByRole,
-} from "../controller/lettergenaration.controller";
+} from "../controllers/lettergenaration.controller";
 const router = Router();
 router.get("/comadvsug", getComAdvSug);
 router.get("/letters", getLetters);

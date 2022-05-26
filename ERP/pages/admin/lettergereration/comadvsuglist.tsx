@@ -74,4 +74,4 @@ const comadvsuglist = () => {
 };
 
 export default comadvsuglist;
-comadvsuglist.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+// comadvsuglist.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

@@ -231,4 +231,4 @@ const status = () => {
 };
 export default status;
 
-status.getLayout = (page) => <UserDashboardLayout>{page}</UserDashboardLayout>;
+// status.getLayout = (page) => <UserDashboardLayout>{page}</UserDashboardLayout>;

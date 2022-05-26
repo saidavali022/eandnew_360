@@ -258,4 +258,4 @@ const feedback = () => {
   );
 };
 export default feedback;
-feedback.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+// feedback.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

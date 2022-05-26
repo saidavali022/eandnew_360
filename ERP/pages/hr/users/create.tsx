@@ -172,7 +172,12 @@ export default function create() {
                     sx={{ m: 3 }}
                     onChange={getFormData}
                     name="gender"
-                  />
+                    select
+                  >
+                    {["Male", "Female", "Other"].map((item) => {
+                      return <MenuItem value={item}>{item}</MenuItem>;
+                    })}
+                  </TextField>
                   <TextField
                     className={styles.userCreateForm}
                     required
@@ -209,12 +214,17 @@ export default function create() {
                     sx={{ m: 3 }}
                     onChange={getFormData}
                     name="blood_group"
-                  />
+                    select
+                  >
+                    {BloodGroups.map((item, index) => {
+                      return <MenuItem value={item}>{item}</MenuItem>;
+                    })}
+                  </TextField>
 
                   <TextField
                     className={styles.userCreateForm}
                     required
-                    label="house No"
+                    label="House No"
                     sx={{ m: 3 }}
                     onChange={getFormData}
                     name="houseNo"
@@ -223,7 +233,7 @@ export default function create() {
                   <TextField
                     className={styles.userCreateForm}
                     required
-                    label="street"
+                    label="Street"
                     sx={{ m: 3 }}
                     onChange={getFormData}
                     name="street"
@@ -581,4 +591,4 @@ export default function create() {
   );
 }
 
-create.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+// create.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

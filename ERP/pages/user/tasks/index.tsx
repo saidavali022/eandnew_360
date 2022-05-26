@@ -4,6 +4,7 @@ import NextLink from "next/link";
 import axios, { toast, ToastContainer_box } from "@utils/defaultImports";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import { NextPage } from "next";
 // material
 import {
   Card,
@@ -32,12 +33,15 @@ import {
 } from "@mui/x-data-grid";
 import Label from "@components/Label";
 import { colorStatusPriority } from "@utils/pillColor";
-export default function Tasks() {
+
+function Tasks(props) {
   const [rowData, setrowData] = useState([]);
   const [formData, setformData] = useState();
   const [editId, setEditId] = useState();
   const [anchor, setanchor] = useState(false);
   const globalState = useSelector((state) => state.globalState);
+
+  const { global } = useSelector((state) => state.globalState);
   const [selectId, setselectId] = useState(0);
   const columns: GridColDef[] = [
     { field: "id", headerName: "S.No", width: 100 },
@@ -283,4 +287,8 @@ export default function Tasks() {
   );
 }
 
-Tasks.getLayout = (page) => <UserDashboardLayout>{page}</UserDashboardLayout>;
+// Tasks.getLayout = (page) => {
+//   return <UserDashboardLayout>{page}</UserDashboardLayout>;
+// };
+
+export default Tasks;

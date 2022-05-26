@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import UserDashboardLayout from "@layouts/userdashboard";
-
+import Page from "@components/Page";
 import {
   Container,
   Box,
@@ -98,54 +98,56 @@ export default function index() {
   };
 
   return (
-    <Box sx={{ width: "85%", flexGrow: 1 }}>
-      <Container>
-        <Card sx={{ p: 5 }}>
-          <Typography variant="h4" sx={{ py: 4 }}>
-            Resignation Letter
-          </Typography>
-          <Typography>
-            I , <b>{empData.firstName + " " + empData.lastName}</b> ,am
-            resigning from my position as a <b>{empData.department}</b> with e&d
-            on <b>{today}</b> and my notice period ends on <b>{notice}</b> days
-            the reason for my resigning is
-          </Typography>
+    <Page title="User Exit || E&D 360" role="user">
+      <Box sx={{ width: "85%", flexGrow: 1 }}>
+        <Container>
+          <Card sx={{ p: 5 }}>
+            <Typography variant="h4" sx={{ py: 4 }}>
+              Resignation Letter
+            </Typography>
+            <Typography>
+              I , <b>{empData.firstName + " " + empData.lastName}</b> ,am
+              resigning from my position as a <b>{empData.department}</b> with
+              e&d on <b>{today}</b> and my notice period ends on <b>{notice}</b>{" "}
+              days the reason for my resigning is
+            </Typography>
 
-          <form onSubmit={() => formSubmit(event)}>
-            <TextField
-              required
-              name="reason"
-              className={styles.taskInputField}
-              multiline="true"
-              minRows="4"
-              defaultValue={empRegData?.reason}
-              InputProps={{
-                readOnly: readonly,
-              }}
-              onChange={(event: any) => {
-                setFormData({
-                  ...formData,
-                  [event?.target.name]: event?.target.value,
-                });
-              }}
-            />
+            <form onSubmit={() => formSubmit(event)}>
+              <TextField
+                required
+                name="reason"
+                className={styles.taskInputField}
+                multiline="true"
+                minRows="4"
+                defaultValue={empRegData?.reason}
+                InputProps={{
+                  readOnly: readonly,
+                }}
+                onChange={(event: any) => {
+                  setFormData({
+                    ...formData,
+                    [event?.target.name]: event?.target.value,
+                  });
+                }}
+              />
 
-            <Stack
-              direction="row"
-              justifyContent="flex-end"
-              sx={{ pr: 5, mr: 2 }}
-              alignItems="center"
-              spacing={2}
-            >
-              <Button type="submit" variant="contained" disabled={readonly}>
-                Submit
-              </Button>
-            </Stack>
-          </form>
-        </Card>
-      </Container>
-      {ToastContainer_box}
-    </Box>
+              <Stack
+                direction="row"
+                justifyContent="flex-end"
+                sx={{ pr: 5, mr: 2 }}
+                alignItems="center"
+                spacing={2}
+              >
+                <Button type="submit" variant="contained" disabled={readonly}>
+                  Submit
+                </Button>
+              </Stack>
+            </form>
+          </Card>
+        </Container>
+        {ToastContainer_box}
+      </Box>
+    </Page>
   );
 }
-index.getLayout = (page) => <UserDashboardLayout>{page}</UserDashboardLayout>;
+// index.getLayout = (page) => <UserDashboardLayout>{page}</UserDashboardLayout>;

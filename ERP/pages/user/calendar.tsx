@@ -472,17 +472,6 @@ export default function Calendar() {
                       />
                     </LocalizationProvider>
                   </DialogContent>
-                  <DialogActions>
-                    {appointmentInput.id !== null && (
-                      <Button onClick={handleEventDelete}>Delete</Button>
-                    )}
-                    <Button onClick={handleModelClose} variant="contained">
-                      Cancel
-                    </Button>
-                    <Button type="submit" variant="contained">
-                      Save
-                    </Button>
-                  </DialogActions>
                 </form>
               </TabPanel>
               <TabPanel value="remainder">Remainder</TabPanel>

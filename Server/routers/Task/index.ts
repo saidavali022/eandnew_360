@@ -1,6 +1,6 @@
 const router = require("express").Router();
 import upload from "../../modules/fileupload";
-import * as task from "../../controller/tasks.controller";
+import * as task from "../../controllers/tasks.controller";
 
 router.post("/create/:Id", upload, async (req: any, res: any) => {
   await task.getTaskDetails(req, res);

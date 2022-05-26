@@ -10,4 +10,4 @@ const leaves = () => {
 };
 
 export default leaves;
-leaves.getLayout = (page: String) => <DashboardLayout>{page}</DashboardLayout>;
+// leaves.getLayout = (page: String) => <DashboardLayout>{page}</DashboardLayout>;

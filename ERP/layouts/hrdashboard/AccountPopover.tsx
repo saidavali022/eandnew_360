@@ -30,7 +30,7 @@ const MENU_OPTIONS = [
   {
     label: "Profile",
     icon: "mdi:account",
-    linkTo: "/dashboard/users/profile",
+    linkTo: "/hr/profile",
   },
   {
     label: "Settings",

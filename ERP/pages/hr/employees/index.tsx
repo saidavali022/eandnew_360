@@ -13,4 +13,4 @@ const data = {
 export default function Index() {
   return <List data={data} />;
 }
-Index.getLayout = (page: String) => <DashboardLayout>{page}</DashboardLayout>;
+// Index.getLayout = (page: String) => <DashboardLayout>{page}</DashboardLayout>;

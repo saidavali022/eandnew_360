@@ -156,4 +156,4 @@ function letter() {
   );
 }
 export default letter;
-letter.getLayout = (page: String) => <DashboardLayout>{page}</DashboardLayout>;
+// letter.getLayout = (page: String) => <DashboardLayout>{page}</DashboardLayout>;

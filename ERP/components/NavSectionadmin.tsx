@@ -202,6 +202,30 @@ export default function NavSectionadmin({ navConfig, ...other }: any) {
           <NavItem key={item.title} item={item} active={match} />
         ))}
       </List>
+
+      <ListItemButton
+        selected={2 === selectedMenu}
+        onClick={() => {
+          handleClick(2);
+        }}
+      >
+        <ListItemIcon>
+          <InboxIcon />
+        </ListItemIcon>
+        <ListItemText primary="Employees" />
+        {2 === selectedMenu ? <ExpandLess /> : <ExpandMore />}
+      </ListItemButton>
+      <Collapse in={2 === selectedMenu} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <NextLink href="/admin/employees">
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon></ListItemIcon>
+              <ListItemText primary="View Employees" />
+            </ListItemButton>
+          </NextLink>
+        </List>
+      </Collapse>
+
       <ListItemButton
         selected={1 === selectedMenu}
         onClick={() => {

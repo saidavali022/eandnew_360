@@ -9,7 +9,7 @@ import {
   checkList,
   createCheckList,
   getcheckListById,
-} from "../controller/exits.controller";
+} from "../controllers/exits.controller";
 const router = Router();
 router.get("/checklists", checkList);
 router.get("/checklists/:empId", getcheckListById);

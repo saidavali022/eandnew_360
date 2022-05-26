@@ -6,6 +6,6 @@ const latelogin = () => {
 };
 
 export default latelogin;
-latelogin.getLayout = (page) => (
-  <UserDashboardLayout>{page}</UserDashboardLayout>
-);
+// latelogin.getLayout = (page) => (
+//   <UserDashboardLayout>{page}</UserDashboardLayout>
+// );

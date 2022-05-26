@@ -155,4 +155,4 @@ const checklist = (props) => {
   );
 };
 export default checklist;
-checklist.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+// checklist.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

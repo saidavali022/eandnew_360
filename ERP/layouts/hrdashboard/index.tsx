@@ -34,7 +34,7 @@ const MainStyle = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout({ children }: LayoutProps) {
+export default function HrDashboardLayout({ children }: LayoutProps) {
   const [open, setOpen] = useState(false);
 
   return (

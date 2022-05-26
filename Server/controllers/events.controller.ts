@@ -22,9 +22,7 @@ export const getUserEvents = async (req: IEventRequest, res: Response) => {
   const { start, end } = req.query;
   try {
     const events = await EventService.getUserEvents(userId, { start, end });
-    return res.status(200).json({
-      events,
-    });
+    return res.status(200).json(events);
   } catch (e: any) {
     return res.status(400).json({ status: 400, message: e.message });
   }

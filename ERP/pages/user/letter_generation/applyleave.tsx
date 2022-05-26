@@ -276,4 +276,4 @@ function leave() {
   );
 }
 export default leave;
-leave.getLayout = (page) => <UserDashboardLayout>{page}</UserDashboardLayout>;
+// leave.getLayout = (page) => <UserDashboardLayout>{page}</UserDashboardLayout>;

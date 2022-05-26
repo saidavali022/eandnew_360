@@ -547,6 +547,6 @@ export default function Interviews() {
   );
 }
 
-Interviews.getLayout = (page: ReactElement) => (
-  <DashboardLayout>{page}</DashboardLayout>
-);
+// Interviews.getLayout = (page: ReactElement) => (
+//   <DashboardLayout>{page}</DashboardLayout>
+// );

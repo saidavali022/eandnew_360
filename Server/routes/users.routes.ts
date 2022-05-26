@@ -8,7 +8,7 @@ import {
   updateUsersById,
   getAllUsers,
   getUsersLoginDetails,
-} from "../controller/users.controller";
+} from "../controllers/users.controller";
 const router = Router();
 router.get("/info", getAllUsers);
 

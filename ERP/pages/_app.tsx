@@ -3,12 +3,18 @@ import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import ThemeConfig from "@theme/index";
+import { useRouter } from "next/router";
 import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 import DashboardLayout from "@layouts/dashboard";
 import UserDashboardLayout from "@layouts/userdashboard";
+import HrDashboardLayout from "@layouts/hrdashboard";
+
 import { Provider } from "react-redux";
-import store from "../redux/store/store";
+import store, { persistor } from "../redux/store/store";
+
+import { PersistGate } from "redux-persist/integration/react";
+
 import "@styles/globals.css";
 import GlobalStyles from "@theme/globalStyles";
 
@@ -29,39 +35,83 @@ type NextPageWithLayout = NextPage & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
-
 const MyApp: React.FunctionComponent<AppPropsWithLayout> = (props) => {
+  const router = useRouter();
+  const path = router.route.split("/");
   const {
     Component,
     pageProps: { session, ...pageProps },
   } = props;
   const pageLayout = Component.getLayout || ((page) => page);
   // if (Component.getLayout) {
-  return pageLayout(
+  if (path[1] == "user") {
+    return pageLayout(
+      <>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <SessionProvider session={session}>
+              <ThemeConfig>
+                <UserDashboardLayout>
+                  <Component {...pageProps} />
+                  {ToastContainer_box}
+                </UserDashboardLayout>
+              </ThemeConfig>
+            </SessionProvider>
+          </PersistGate>
+        </Provider>
+      </>
+    );
+  }
+
+  if (path[1] == "admin") {
+    return pageLayout(
+      <>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <SessionProvider session={session}>
+              <ThemeConfig>
+                <DashboardLayout>
+                  <Component {...pageProps} />
+                  {ToastContainer_box}
+                </DashboardLayout>
+              </ThemeConfig>
+            </SessionProvider>
+          </PersistGate>
+        </Provider>
+      </>
+    );
+  }
+
+  if (path[1] == "hr") {
+    return pageLayout(
+      <>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <SessionProvider session={session}>
+              <ThemeConfig>
+                <HrDashboardLayout>
+                  <Component {...pageProps} />
+                  {ToastContainer_box}
+                </HrDashboardLayout>
+              </ThemeConfig>
+            </SessionProvider>
+          </PersistGate>
+        </Provider>
+      </>
+    );
+  }
+
+  return (
     <>
       <Provider store={store}>
         <SessionProvider session={session}>
           <ThemeConfig>
             <Component {...pageProps} />
-            {ToastContainer_box}
           </ThemeConfig>
         </SessionProvider>
       </Provider>
     </>
   );
-  // }
-
-  // return (
-  //   <>
-  //     <Provider store={store}>
-  //       <SessionProvider session={session}>
-  //         <ThemeConfig>
-  //           <Component {...pageProps} />
-  //         </ThemeConfig>
-  //       </SessionProvider>
-  //     </Provider>
-  //   </>
-  // );
 };
 
 export default MyApp;

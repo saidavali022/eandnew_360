@@ -1,5 +1,5 @@
 const initialState = {
-  Role: "user",
+  // role: "user",
   // Employee_id: "ED250221SAI1603",
   // email: "shaiksaidavali022@gmail.com",
 };
@@ -10,6 +10,7 @@ const globalState = (state = initialState, action) => {
         ...state,
         Employee_id: action.payload.employee_id,
         email: action.payload.email,
+        role: action.payload.role,
       };
     }
     default:

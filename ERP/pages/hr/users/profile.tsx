@@ -42,4 +42,4 @@ const profile = () => {
 };
 
 export default profile;
-profile.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+// profile.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

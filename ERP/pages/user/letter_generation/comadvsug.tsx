@@ -122,6 +122,6 @@ function comadvsug() {
   );
 }
 export default comadvsug;
-comadvsug.getLayout = (page) => (
-  <UserDashboardLayout>{page}</UserDashboardLayout>
-);
+// comadvsug.getLayout = (page) => (
+//   <UserDashboardLayout>{page}</UserDashboardLayout>
+// );

@@ -68,4 +68,4 @@ const list = () => {
 };
 
 export default list;
-list.getLayout = (page: String) => <DashboardLayout>{page}</DashboardLayout>;
+// list.getLayout = (page: String) => <DashboardLayout>{page}</DashboardLayout>;

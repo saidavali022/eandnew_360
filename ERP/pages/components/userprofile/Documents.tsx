@@ -76,12 +76,13 @@ const Documents = (props) => {
         department: data.designation,
         compensation: data.compensation,
         noticePeriod: data.noticePeriod,
+        role: data.role,
         password: uuidv1().substring(1, 8),
       },
     })
       .then((response: any) => {
         if (response.status == 200) {
-          router.push("/hr/users");
+          router.push("/hr/employees");
           toast.success("success", {
             theme: "colored",
           });
@@ -205,6 +206,20 @@ const Documents = (props) => {
               className={styles.taskInputField}
               onChange={getFormData}
             />
+
+            <TextField
+              required
+              label="Role"
+              name="role"
+              className={styles.taskInputField}
+              onChange={getFormData}
+              select
+            >
+              <MenuItem value="user">User</MenuItem>
+              <MenuItem value="hr">HR</MenuItem>
+              <MenuItem value="Admin">Admin</MenuItem>
+            </TextField>
+
             <Stack direction="row" spacing={2} sx={{ mx: 3 }}>
               <Button type="submit" variant="contained" color="primary">
                 Update

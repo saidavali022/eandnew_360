@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import Head from "next/head";
-
+import { useEffect } from "react";
 // material
+import { useRouter } from "next/router";
 import { Box } from "@mui/material";
-
+import { useSelector } from "react-redux";
 // ----------------------------------------------------------------------
 
 // const Page = forwardRef(({ children, title = '', ...other }, ref) => (
@@ -20,6 +21,14 @@ import { Box } from "@mui/material";
 //   title: PropTypes.string
 // };
 const Page = ({ children, title = "", ...other }: any) => {
+  const router = useRouter();
+  const globalState = useSelector((state) => state.globalState);
+  // useEffect(() => {
+  //   if (role != globalState.role || !globalState.Employee_id) {
+  //     router.push("/");
+  //   }
+  // }, [role]);
+
   return (
     <>
       <Box>

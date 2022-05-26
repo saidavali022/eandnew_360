@@ -71,4 +71,4 @@ const leaves = () => {
 };
 
 export default leaves;
-leaves.getLayout = (page) => <UserDashboardLayout>{page}</UserDashboardLayout>;
+// leaves.getLayout = (page) => <UserDashboardLayout>{page}</UserDashboardLayout>;

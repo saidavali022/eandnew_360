@@ -49,6 +49,7 @@ export async function updateUsersById(req: any, res: any) {
       department: req.body.department || "",
       designation: req.body.designation || "",
       compensation: req.body.compensation || "",
+      role: req.body.role || "",
     },
   });
 }

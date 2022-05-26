@@ -436,4 +436,4 @@ export default function Task() {
     </Page>
   );
 }
-Task.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+// Task.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;

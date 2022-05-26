@@ -199,7 +199,7 @@ model users {
   state                 String            @db.VarChar(180)
   street                String            @db.VarChar(180)
   twitterProfileLink    String?           @db.VarChar(180)
-  employee_id           String            @unique @default("0") @db.VarChar(255)
+  employee_id           String            @default("0") @db.VarChar(255)
   status                users_status      @default(pending)
   compensation          String            @default("") @db.VarChar(180)
   department            String            @default("") @db.VarChar(255)
@@ -208,6 +208,7 @@ model users {
   noticePeriod          String            @default("") @db.VarChar(180)
   password              String            @default("") @db.VarChar(250)
   username              String            @db.VarChar(180)
+  role                  users_role        @default(user)
   attendance            attendance[]
   event_attendees       event_attendees[]
   events                events[]
@@ -298,4 +299,10 @@ enum users_status {
   rejected
   accepted
   EMPTY_ENUM_VALUE  @map("")
+}
+
+enum users_role {
+  user
+  hr
+  admin
 }

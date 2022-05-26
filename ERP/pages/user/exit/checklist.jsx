@@ -162,6 +162,6 @@ const checklist = () => {
   );
 };
 export default checklist;
-checklist.getLayout = (page) => (
-  <UserDashboardLayout>{page}</UserDashboardLayout>
-);
+// checklist.getLayout = (page) => (
+//   <UserDashboardLayout>{page}</UserDashboardLayout>
+// );

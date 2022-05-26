@@ -70,7 +70,7 @@ const appUsers = [
     name: "mohammed",
   },
   {
-    id: "END1112",
+    id: "ED250222SHA1603",
     name: "Shaik",
   },
   {
@@ -107,7 +107,11 @@ const interviewAppointmentInitialState = {
 
 export default function Calendar() {
   // const calendarRef = useRef(null);
-  const globalState = useSelector((state) => state.globalState);
+  // const globalState = useSelector((state) => state.globalState);
+  const globalState = {
+    Employee_id: "END1111",
+  };
+
   const [openModel, setOpenModel] = useState(false);
   const [tabIndex, setTabIndex] = useState("appointment");
   const [appointmentInput, setAppointmentInput] = useReducer(
@@ -153,10 +157,7 @@ export default function Calendar() {
     const eventId = event.event._def.publicId;
 
     axios
-      .get(
-        `http://localhost:3001/users/events/${globalState.Employee_id}/${eventId}`,
-        {}
-      )
+      .get(`users/events/${globalState.Employee_id}/${eventId}`, {})
       .then((res: any) => {
         if (res.status !== 200) {
           toast.error("Something went Wrong", {
@@ -350,7 +351,7 @@ export default function Calendar() {
     failureCallback: (arg0: any) => void
   ) => {
     axios
-      .get(`http://localhost:3001/users/events/${globalState.Employee_id}`, {
+      .get(`/users/events/${globalState.Employee_id}`, {
         params: {
           start: info.startStr,
           end: info.endStr,
@@ -758,6 +759,6 @@ export default function Calendar() {
     </Page>
   );
 }
-Calendar.getLayout = (page: ReactElement) => (
-  <DashboardLayout>{page}</DashboardLayout>
-);
+// Calendar.getLayout = (page: ReactElement) => (
+//   <DashboardLayout>{page}</DashboardLayout>
+// );
