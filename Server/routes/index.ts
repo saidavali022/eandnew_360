@@ -12,8 +12,9 @@ router.use("/users", users);
 router.use("/tasks", tasks);
 router.use("/exits", exit);
 router.use("/lettergenaration", lettergenaration);
-// router.use("/users/events/interview", interview);
-// router.use("/users/events", events);
-// router.use("/attendance", attendance);
+
+router.use("/users/events/interview", interview);
+router.use("/users/events", events);
+router.use("/attendance", attendance);
 
 export default router;

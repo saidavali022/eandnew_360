@@ -141,6 +141,7 @@ const Index = ({ userData, role }) => {
                 <Tab label="Personal Details" value="1" />
                 <Tab label="Bank Details" value="2" />
                 <Tab label="Documents" value="3" />
+                <Tab label="Compensation" value="4" />
               </TabList>
             </Box>
             <TabPanel value="1">
@@ -156,6 +157,13 @@ const Index = ({ userData, role }) => {
               />
             </TabPanel>
             <TabPanel value="3">
+              <Documents
+                menu={sideMenuData}
+                data={documents != null ? documents : 0}
+              />
+            </TabPanel>
+
+            <TabPanel value="4">
               <Documents
                 menu={sideMenuData}
                 data={documents != null ? documents : 0}

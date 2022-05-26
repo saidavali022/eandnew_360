@@ -199,7 +199,7 @@ model users {
   state                 String            @db.VarChar(180)
   street                String            @db.VarChar(180)
   twitterProfileLink    String?           @db.VarChar(180)
-  employee_id           String            @default("0") @db.VarChar(255)
+  employee_id           String            @unique @default("0") @db.VarChar(255)
   status                users_status      @default(pending)
   compensation          String            @default("") @db.VarChar(180)
   department            String            @default("") @db.VarChar(255)

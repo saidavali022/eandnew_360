@@ -211,27 +211,35 @@ export default function Task() {
   function renderAction(params: GridRenderCellParams) {
     return (
       <Stack direction="row" spacing={2}>
-        <Button
-          variant="contained"
-          color="error"
-          id={params.id}
-          onClick={deleteTask}
-          startIcon={<DeleteIcon />}
-        >
-          Delete
-        </Button>
-        <Button
-          variant="contained"
-          color="success"
-          id={params.id}
-          onClick={() => {
-            setanchor(true);
-            setEditId(params.id);
-          }}
-          startIcon={<EditIcon />}
-        >
-          Edit
-        </Button>
+        {params?.row.status == "pendding" ? (
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="contained"
+              color="error"
+              id={params.id}
+              onClick={deleteTask}
+              startIcon={<DeleteIcon />}
+            >
+              Delete
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              id={params.id}
+              onClick={() => {
+                setanchor(true);
+                setEditId(params.id);
+              }}
+              startIcon={<EditIcon />}
+            >
+              Edit
+            </Button>
+          </Stack>
+        ) : (
+          <Button variant="contained" color="info">
+            Completed
+          </Button>
+        )}
       </Stack>
     );
   }
