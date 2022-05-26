@@ -66,7 +66,7 @@ BlogPostCard.propTypes = {
 };
 
 export default function BlogPostCard({ post, index }) {
-  const { cover, title, view, comment, share, author, createdAt } = post;
+  const { cover, title, view, comment, share, author, created_at } = post;
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
 
@@ -149,7 +149,7 @@ export default function BlogPostCard({ post, index }) {
             variant="caption"
             sx={{ color: "text.disabled", display: "block" }}
           >
-            {fDate(createdAt)}
+            {fDate(created_at)}
           </Typography>
 
           <NextLink href="#">

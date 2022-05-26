@@ -19,13 +19,13 @@ model attendance {
 }
 
 model breaks {
-  id           Int         @id @default(autoincrement()) @db.UnsignedInt
-  break_start  DateTime    @default(now()) @db.Timestamp(0)
-  break_end    DateTime?   @db.Timestamp(0)
-  attendanceId Int?        @db.UnsignedInt
-  attendance   attendance? @relation(fields: [attendanceId], references: [id], map: "Break_attendanceId_fkey")
+  id            Int         @id @default(autoincrement()) @db.UnsignedInt
+  break_start   DateTime    @default(now()) @db.Timestamp(0)
+  break_end     DateTime?   @db.Timestamp(0)
+  attendance_Id Int?        @db.UnsignedInt
+  attendance    attendance? @relation(fields: [attendance_Id], references: [id], map: "Break_attendance_Id_fkey")
 
-  @@index([attendanceId], map: "Break_attendanceId_fkey")
+  @@index([attendance_Id], map: "Break_attendance_Id_fkey")
 }
 
 model checklists {
@@ -42,7 +42,7 @@ model checklists {
 model employee_complants_advices_suggestions {
   id          Int                                                @id @default(autoincrement())
   employee_id String                                             @db.VarChar(255)
-  create_at   DateTime                                           @default(now()) @db.Date
+  created_at  DateTime                                           @default(now()) @db.Date
   message     String                                             @db.LongText
   status      employee_complants_advices_suggestions_status
   letter_type employee_complants_advices_suggestions_letter_type
@@ -55,7 +55,7 @@ model employee_leaves {
   leave_dates     String                          @db.VarChar(255)
   reason          String                          @db.Text
   permission_type employee_leaves_permission_type
-  create_at       DateTime                        @default(now()) @db.Date
+  created_at      DateTime                        @default(now()) @db.Date
   from            String                          @db.VarChar(255)
   to              String                          @db.VarChar(255)
 }
@@ -65,14 +65,14 @@ model employee_letters {
   employee_id String                       @db.VarChar(255)
   letter_type employee_letters_letter_type
   letter      String                       @db.VarChar(255)
-  create_at   DateTime                     @default(now()) @db.DateTime(0)
+  created_at  DateTime                     @default(now()) @db.DateTime(0)
 }
 
 model employee_resignation {
   id                 Int                                     @default(autoincrement())
   employee_id        String                                  @id
   reason             String                                  @db.LongText
-  create_at          DateTime                                @default(now()) @db.Date
+  created_at         DateTime                                @default(now()) @db.Date
   end_date           DateTime                                @db.Date
   start_date         DateTime                                @db.Date
   status             employee_resignation_status
@@ -125,7 +125,7 @@ model feedback {
   fed_question_10 String          @db.Text
   fed_question_11 String          @db.Text
   status          feedback_status
-  create_at       DateTime        @default(now()) @db.Date
+  created_at      DateTime        @default(now()) @db.Date
 
   @@index([id], map: "id")
 }
@@ -146,72 +146,72 @@ model task {
   employee_id String
   start_date  DateTime
   end_date    DateTime
-  createdAt   DateTime    @default(now()) @db.Timestamp(6)
+  created_at  DateTime    @default(now()) @db.Timestamp(6)
   status      task_status
   priority    String?     @default("low")
 }
 
 model users {
-  id                    Int               @id @default(autoincrement())
-  email                 String            @db.VarChar(180)
-  phone                 String            @db.VarChar(180)
-  gender                users_gender
-  country               String            @db.VarChar(180)
-  city                  String            @db.VarChar(180)
-  BankName              String?           @db.VarChar(180)
-  BranchName            String?           @db.VarChar(180)
-  Dob                   DateTime?         @db.DateTime(0)
-  Doj                   DateTime?         @db.DateTime(0)
-  IFSCCode              String?           @db.VarChar(180)
-  SSC                   String?           @db.VarChar(180)
-  TC                    String?           @db.VarChar(180)
-  UPIId                 String?           @db.VarChar(180)
-  aadhar                String?           @db.VarChar(180)
-  aadharNo              String?           @db.VarChar(180)
-  accountHolderName     String?           @db.VarChar(180)
-  bachelor              String?           @db.VarChar(180)
-  bankAccountNo         String?           @db.VarChar(180)
-  blood_group           String            @db.VarChar(180)
-  diploma               String?           @db.VarChar(180)
-  expectedPassoutYear   Int?              @db.Year
-  experienceCertificate String?           @db.VarChar(180)
-  facebookProfileLink   String?           @db.VarChar(180)
-  fatherName            String            @db.VarChar(180)
-  firstName             String            @db.VarChar(180)
-  guardianPhone         String?           @db.VarChar(180)
-  houseNo               String            @db.VarChar(180)
-  incrementLetter       String?           @db.VarChar(180)
-  instagramProfileLink  String?           @db.VarChar(180)
-  intermediate          String?           @db.VarChar(180)
-  lastName              String            @db.VarChar(180)
-  linkedInProfileLink   String?           @db.VarChar(180)
-  marksMemo             String?           @db.VarChar(180)
-  master                String?           @db.VarChar(180)
-  motherName            String            @db.VarChar(180)
-  nationality           String            @db.VarChar(180)
-  offerLetter           String?           @db.VarChar(180)
-  panCard               String?           @db.VarChar(180)
-  panCardNo             String?           @db.VarChar(180)
-  passoutYear           Int?              @db.Year
-  passportSizePhoto     String?           @db.VarChar(180)
-  payslips              String?           @db.VarChar(180)
-  resignationLette      String?           @db.VarChar(180)
-  state                 String            @db.VarChar(180)
-  street                String            @db.VarChar(180)
-  twitterProfileLink    String?           @db.VarChar(180)
-  employee_id           String            @unique @default("0") @db.VarChar(255)
-  status                users_status      @default(pending)
-  compensation          String            @default("") @db.VarChar(180)
-  department            String            @default("") @db.VarChar(255)
-  designation           String            @default("") @db.VarChar(180)
-  highestQualification  String            @db.VarChar(250)
-  noticePeriod          String            @default("") @db.VarChar(180)
-  password              String            @default("") @db.VarChar(250)
-  username              String            @db.VarChar(180)
-  role                  users_role        @default(user)
-  attendance            attendance[]
-  event_attendees       event_attendees[]
-  events                events[]
+  id                     Int               @id @default(autoincrement())
+  email                  String            @db.VarChar(180)
+  phone                  String            @db.VarChar(180)
+  gender                 users_gender
+  country                String            @db.VarChar(180)
+  city                   String            @db.VarChar(180)
+  bank_name              String?           @db.VarChar(180)
+  branch_name            String?           @db.VarChar(180)
+  dob                    DateTime?         @db.DateTime(0)
+  doj                    DateTime?         @db.DateTime(0)
+  ifsc_code              String?           @db.VarChar(180)
+  ssc                    String?           @db.VarChar(180)
+  TC                     String?           @db.VarChar(180)
+  upi_id                 String?           @db.VarChar(180)
+  aadhar_img             String?           @db.VarChar(180)
+  aadhar_no              String?           @db.VarChar(180)
+  account_holder_name    String?           @db.VarChar(180)
+  bachelor               String?           @db.VarChar(180)
+  bank_account_no        String?           @db.VarChar(180)
+  blood_group            String            @db.VarChar(180)
+  diploma                String?           @db.VarChar(180)
+  expected_passout_year  Int?              @db.Year
+  experience_certificate String?           @db.VarChar(180)
+  facebook_profile_link  String?           @db.VarChar(180)
+  father_name            String            @db.VarChar(180)
+  first_name             String            @db.VarChar(180)
+  guardian_phone         String?           @db.VarChar(180)
+  house_no               String            @db.VarChar(180)
+  increment_letter       String?           @db.VarChar(180)
+  instagram_profile_link String?           @db.VarChar(180)
+  intermediate           String?           @db.VarChar(180)
+  last_name              String            @db.VarChar(180)
+  linkedin_profile_ink   String?           @db.VarChar(180)
+  marks_memo             String?           @db.VarChar(180)
+  master                 String?           @db.VarChar(180)
+  mother_name            String            @db.VarChar(180)
+  nationality            String            @db.VarChar(180)
+  offer_letter           String?           @db.VarChar(180)
+  pancard_img            String?           @db.VarChar(180)
+  pancard_no             String?           @db.VarChar(180)
+  pass_out_year          Int?              @db.Year
+  passport_size_photo    String?           @db.VarChar(180)
+  pay_slips              String?           @db.VarChar(180)
+  resignation_letter     String?           @db.VarChar(180)
+  state                  String            @db.VarChar(180)
+  street                 String            @db.VarChar(180)
+  twitter_profile_link   String?           @db.VarChar(180)
+  employee_id            String            @unique @default("0") @db.VarChar(255)
+  status                 users_status      @default(pending)
+  compensation           String            @default("") @db.VarChar(180)
+  department             String            @default("") @db.VarChar(255)
+  designation            String            @default("") @db.VarChar(180)
+  highest_qualification  String            @db.VarChar(250)
+  notice_period          String            @default("") @db.VarChar(180)
+  password               String            @default("") @db.VarChar(250)
+  username               String            @db.VarChar(180)
+  role                   users_role        @default(user)
+  attendance             attendance[]
+  event_attendees        event_attendees[]
+  events                 events[]
 }
 
 enum checklists_check_status {

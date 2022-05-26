@@ -44,9 +44,9 @@ const Documents = (props) => {
 
   const empformate = (
     "ED" +
-    moment(props.menu.Doj).utc().format("DDMMYY") +
+    moment(props.menu.doj).utc().format("DDMMYY") +
     props.menu.username.substring(0, 3) +
-    moment(props.menu.Dob).utc().format("DDMM")
+    moment(props.menu.dob).utc().format("DDMM")
   )
     .toString()
     .toUpperCase();
@@ -75,7 +75,7 @@ const Documents = (props) => {
         designation: data.designation,
         department: data.designation,
         compensation: data.compensation,
-        noticePeriod: data.noticePeriod,
+        notice_period: data.notice_period,
         role: data.role,
         password: uuidv1().substring(1, 8),
       },
@@ -171,7 +171,7 @@ const Documents = (props) => {
             <TextField
               required
               label="Notice Period"
-              name="noticePeriod"
+              name="notice_period"
               className={styles.taskInputField}
               onChange={getFormData}
             />

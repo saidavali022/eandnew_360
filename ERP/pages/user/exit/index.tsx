@@ -58,7 +58,7 @@ export default function index() {
   });
 
   const notice = new Date(
-    date.setDate(date.getDate() + parseInt(empData.noticePeriod))
+    date.setDate(date.getDate() + parseInt(empData.notice_period))
   ).toLocaleString("default", {
     month: "numeric",
     day: "2-digit",
@@ -68,7 +68,7 @@ export default function index() {
   const [formData, setFormData] = useState({
     employee_id: globalState.Employee_id,
     start_date: today,
-    create_at: today,
+    created_at: today,
   });
 
   useEffect(() => {
@@ -106,7 +106,7 @@ export default function index() {
               Resignation Letter
             </Typography>
             <Typography>
-              I , <b>{empData.firstName + " " + empData.lastName}</b> ,am
+              I , <b>{empData.first_name + " " + empData.last_name}</b> ,am
               resigning from my position as a <b>{empData.department}</b> with
               e&d on <b>{today}</b> and my notice period ends on <b>{notice}</b>{" "}
               days the reason for my resigning is

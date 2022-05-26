@@ -41,7 +41,7 @@ const status = () => {
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", minWidth: 120, hide: true },
     { field: "employee_id", headerName: "Employee Id", minWidth: 180 },
-    { field: "create_at", headerName: "Date", minWidth: 220 },
+    { field: "created_at", headerName: "Date", minWidth: 220 },
     { field: "start_date", headerName: "Start Date", minWidth: 220 },
     { field: "end_date", headerName: "End Date", minWidth: 220 },
     { field: "status", headerName: "Status", minWidth: 200 },
@@ -136,10 +136,10 @@ const status = () => {
                 />
                 <TextField
                   required
-                  label="create_at"
-                  name="create_at"
+                  label="created_at"
+                  name="created_at"
                   className={styles.taskInputField}
-                  value={formData?.create_at}
+                  value={formData?.created_at}
                   InputProps={{
                     readOnly: true,
                   }}

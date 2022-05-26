@@ -6,7 +6,7 @@ export const getUserAttendance = async (userId: string, date: string) => {
     const user: any = await prisma.users.findUnique({
       where: { employee_id: userId },
       select: {
-        Doj: true,
+        doj: true,
       },
     });
 

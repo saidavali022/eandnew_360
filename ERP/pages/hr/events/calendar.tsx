@@ -347,7 +347,7 @@ export default function Calendar() {
 
   const getEvents = (
     info: { start?: Date; startStr?: string; end?: Date; endStr?: string },
-    successCallback: (arg0: { title: any; start: any; end: any }[]) => void,
+    successcallback: (arg0: { title: any; start: any; end: any }[]) => void,
     failureCallback: (arg0: any) => void
   ) => {
     axios
@@ -364,7 +364,7 @@ export default function Calendar() {
           start: eventData.start,
           end: eventData.end,
         }));
-        successCallback(events);
+        successcallback(events);
       })
       .catch(function (error: any) {
         failureCallback(error);

@@ -39,7 +39,7 @@ const Leavelist = forwardRef((props, ref) => {
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "S.No", width: 100 },
-    { field: "create_at", headerName: "Apply Date", width: 200 },
+    { field: "created_at", headerName: "Apply Date", width: 200 },
     { field: "from", headerName: "From", width: 200 },
     { field: "to", headerName: "To", width: 200 },
     { field: "leave_dates", headerName: "Leave Dates", width: 200 },
@@ -116,7 +116,7 @@ const Leavelist = forwardRef((props, ref) => {
                   label="Apply Date"
                   type="text"
                   disabled
-                  value={formData?.create_at}
+                  value={formData?.created_at}
                   sx={{ width: "100%" }}
                   className={styles.taskInputField}
                 />

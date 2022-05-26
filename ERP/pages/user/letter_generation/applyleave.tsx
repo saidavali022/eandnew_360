@@ -197,7 +197,7 @@ function leave() {
 
               {leaveType == "leave" && (
                 <Typography style={{ textTransform: "capitalize" }}>
-                  I , <b>{empData.firstName + " " + empData.lastName}</b>{" "}
+                  I , <b>{empData.first_name + " " + empData.last_name}</b>{" "}
                   working in
                   <b> {empData.department} </b> want to seek leave from
                   <DatePicker
@@ -216,7 +216,7 @@ function leave() {
 
               {(leaveType == "earlylogout" || leaveType == "latelogin") && (
                 <Typography style={{ textTransform: "capitalize" }}>
-                  I , <b>{empData.firstName + " " + empData.lastName}</b>{" "}
+                  I , <b>{empData.first_name + " " + empData.last_name}</b>{" "}
                   working in
                   <b> {empData.department} </b> want {leaveType} Permission
                   <DatePicker

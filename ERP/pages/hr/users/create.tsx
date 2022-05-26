@@ -116,7 +116,7 @@ export default function create() {
                     label="First Name"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="firstName"
+                    name="first_name"
                   />
 
                   <TextField
@@ -125,7 +125,7 @@ export default function create() {
                     label="Last Name"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="lastName"
+                    name="last_name"
                   />
 
                   <TextField
@@ -134,7 +134,7 @@ export default function create() {
                     label="Father Name"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="fatherName"
+                    name="father_name"
                   />
 
                   <TextField
@@ -143,7 +143,7 @@ export default function create() {
                     label="Mother Name"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="motherName"
+                    name="mother_name"
                   />
                   <TextField
                     className={styles.userCreateForm}
@@ -184,7 +184,7 @@ export default function create() {
                     label="Guardian Phone"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="guardianPhone"
+                    name="guardian_phone"
                   />
 
                   <TextField
@@ -192,7 +192,7 @@ export default function create() {
                     required
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="Dob"
+                    name="dob"
                     type="date"
                     helperText="Date Of Birth"
                   />
@@ -202,7 +202,7 @@ export default function create() {
                     required
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="Doj"
+                    name="doj"
                     type="date"
                     helperText="Date Of Joining"
                   />
@@ -227,7 +227,7 @@ export default function create() {
                     label="House No"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="houseNo"
+                    name="house_no"
                   />
 
                   <TextField
@@ -279,7 +279,7 @@ export default function create() {
                     required
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="aadhar"
+                    name="aadhar_img"
                     type="file"
                     helperText="Aadhar (PDF)"
                   />
@@ -287,10 +287,10 @@ export default function create() {
                   <TextField
                     className={styles.userCreateForm}
                     required
-                    label="Aadhar No"
+                    label="aadhar No"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="aadharNo"
+                    name="aadhar_no"
                   />
 
                   <TextField
@@ -298,7 +298,7 @@ export default function create() {
                     required
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="panCard"
+                    name="pancard_img"
                     type="file"
                     helperText="Pan Card (PDF)"
                   />
@@ -306,10 +306,10 @@ export default function create() {
                   <TextField
                     className={styles.userCreateForm}
                     required
-                    label="PanCard No"
+                    label="Pan Card No"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="panCardNo"
+                    name="pancard_no"
                   />
 
                   <TextField
@@ -317,7 +317,7 @@ export default function create() {
                     required
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="passportSizePhoto"
+                    name="passport_size_photo"
                     type="file"
                     helperText="Passport Size Photo (png)"
                   />
@@ -329,15 +329,15 @@ export default function create() {
                     sx={{ m: 3 }}
                     label="Highest Qualification"
                     onChange={getFormData}
-                    name="highestQualification"
+                    name="highest_qualification"
                   />
 
                   <TextField
                     className={styles.userCreateForm}
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="SSC"
-                    helperText="SSC certificate (PDF)"
+                    name="ssc"
+                    helperText="ssc certificate (PDF)"
                     type="file"
                   />
 
@@ -381,7 +381,7 @@ export default function create() {
                     className={styles.userCreateForm}
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="marksMemo"
+                    name="marks_memo"
                     type="file"
                     helperText="Marks Memo certificate (PDF)"
                   />
@@ -390,7 +390,7 @@ export default function create() {
                     className={styles.userCreateForm}
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="TC"
+                    name="transfer_certificate"
                     type="file"
                     helperText="TC (PDF)"
                   />
@@ -400,7 +400,7 @@ export default function create() {
                     required
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="passoutYear"
+                    name="pass_out_year"
                     label="Passout Year"
                     helperText="If Completed Graduation/Master Else 0"
                   />
@@ -423,7 +423,7 @@ export default function create() {
                     label="Bank Account No"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="bankAccountNo"
+                    name="bank_account_no"
                   />
 
                   <TextField
@@ -432,7 +432,7 @@ export default function create() {
                     label="IFSC Code"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="IFSCCode"
+                    name="ifsc_code"
                   />
 
                   <TextField
@@ -441,7 +441,7 @@ export default function create() {
                     label="Account Holder Name"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="accountHolderName"
+                    name="account_holder_name"
                   />
                   <TextField
                     className={styles.userCreateForm}
@@ -449,7 +449,7 @@ export default function create() {
                     label="Bank Name"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="BankName"
+                    name="bank_name"
                   />
 
                   <TextField
@@ -458,7 +458,7 @@ export default function create() {
                     label="Branch Name"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="BranchName"
+                    name="branch_name"
                   />
 
                   <TextField
@@ -467,7 +467,7 @@ export default function create() {
                     label="UPI Id"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="UPIId"
+                    name="upi_id"
                   />
 
                   <Typography variant="h4">
@@ -479,7 +479,7 @@ export default function create() {
                     helperText="Offer Letter (PDF)"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="offerLetter"
+                    name="offer_letter"
                     type="file"
                   />
 
@@ -488,7 +488,7 @@ export default function create() {
                     helperText="Experience Certificate (PDF)"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="experienceCertificate"
+                    name="experience_certificate"
                     type="file"
                   />
 
@@ -497,7 +497,7 @@ export default function create() {
                     helperText="Increment Letter (PDF)"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="incrementLetter"
+                    name="increment_letter"
                     type="file"
                   />
 
@@ -506,7 +506,7 @@ export default function create() {
                     helperText="Payslips (PDF)"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="payslips"
+                    name="pay_slips"
                     type="file"
                   />
 
@@ -515,7 +515,7 @@ export default function create() {
                     helperText="Resignation Letter"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="resignationLette"
+                    name="resignation_letter"
                     type="file"
                   />
 
@@ -525,14 +525,14 @@ export default function create() {
                     label="LinkedIn Profile Link"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="linkedInProfileLink"
+                    name="linkedin_profile_ink"
                   />
                   <TextField
                     className={styles.userCreateForm}
                     label="Facebook Profile Link"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="facebookProfileLink"
+                    name="facebook_profile_link"
                   />
 
                   <TextField
@@ -540,12 +540,12 @@ export default function create() {
                     label="Instagram Profile Link"
                     sx={{ m: 3 }}
                     onChange={getFormData}
-                    name="InstagramProfileLink"
+                    name="instagram_profile_link"
                   />
 
                   <TextField
                     className={styles.userCreateForm}
-                    label="twitterProfileLink"
+                    label="twitter_profile_link"
                     sx={{ m: 3 }}
                     onChange={getFormData}
                     name="Twitter Profile Link"

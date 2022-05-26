@@ -14,7 +14,7 @@ export const createData = async (req: Request, res: Response) => {
       start_date: new Date(req.body.start_date),
       end_date: new Date(req.body.end_date),
       status: req.body.status || "pending",
-      create_at: new Date(req.body.create_at),
+      created_at: new Date(req.body.created_at),
       send_feedback_form: "pending",
       send_check_list: "pending",
     },
@@ -60,7 +60,7 @@ export const createfeedBackForm = async (req: Request, res: Response) => {
       fed_question_10: req.body.fed_question_10,
       fed_question_11: req.body.fed_question_11,
       status: req.body.status || "pending",
-      create_at: new Date(),
+      created_at: new Date(),
     },
   });
 };

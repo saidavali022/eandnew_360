@@ -49,7 +49,7 @@ function Tasks(props) {
     { field: "description", headerName: "Description", width: 250 },
     { field: "start_date", headerName: "Start Date", width: 250 },
     { field: "end_date", headerName: "End Date", width: 250 },
-    { field: "createdAt", headerName: "createdAt", width: 250 },
+    { field: "created_at", headerName: "Created At", width: 250 },
     {
       field: "action",
       headerName: "Action",

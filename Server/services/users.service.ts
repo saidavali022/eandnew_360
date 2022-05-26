@@ -44,7 +44,7 @@ export async function updateUsersById(req: any, res: any) {
     data: {
       status: req.body.status,
       employee_id: req.body.employee_id || "",
-      noticePeriod: req.body.noticePeriod || "",
+      notice_period: req.body.notice_period || "",
       password: req.body.password || "",
       department: req.body.department || "",
       designation: req.body.designation || "",
@@ -67,39 +67,39 @@ export async function createUser(req: any, res: any) {
     var data = await prisma.users.create({
       data: {
         username: req.body.username,
-        highestQualification: req.body.highestQualification,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        motherName: req.body.motherName,
-        fatherName: req.body.fatherName,
+        highest_qualification: req.body.highest_qualification,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        mother_name: req.body.mother_name,
+        father_name: req.body.father_name,
         email: req.body.email,
         phone: req.body.phone,
-        guardianPhone: req.body.guardianPhone,
+        guardian_phone: req.body.guardian_phone,
         gender: req.body.gender,
-        Doj: new Date(req.body.Doj),
-        Dob: new Date(req.body.Dob),
+        doj: new Date(req.body.doj),
+        dob: new Date(req.body.dob),
         blood_group: req.body.blood_group,
-        houseNo: req.body.houseNo,
+        house_no: req.body.house_no,
         street: req.body.street,
         city: req.body.city,
         state: req.body.state,
         country: req.body.country,
         nationality: req.body.nationality,
-        passportSizePhoto:
-          req.files["passportSizePhoto"] != undefined
-            ? req.files["passportSizePhoto"][0].filename
+        passport_size_photo:
+          req.files["passport_size_photo"] != undefined
+            ? req.files["passport_size_photo"][0].filename
             : " ",
-        aadharNo: req.body.aadharNo,
-        aadhar:
-          req.files["aadhar"] != undefined
-            ? req.files["aadhar"][0].filename
+        aadhar_no: req.body.aadhar_no,
+        aadhar_img:
+          req.files["aadhar_img"] != undefined
+            ? req.files["aadhar_img"][0].filename
             : " ",
-        panCardNo: req.body.panCardNo || 0,
-        panCard:
-          req.files["panCard"] != undefined
-            ? req.files["panCard"][0].filename
+        pancard_no: req.body.pancard_no || 0,
+        pancard_img:
+          req.files["pancard_img"] != undefined
+            ? req.files["pancard_img"][0].filename
             : " ",
-        SSC: req.files["SSC"] != undefined ? req.files["SSC"][0].filename : " ",
+        ssc: req.files["ssc"] != undefined ? req.files["ssc"][0].filename : " ",
         intermediate:
           req.files["intermediate"] != undefined
             ? req.files["intermediate"][0].filename
@@ -116,43 +116,43 @@ export async function createUser(req: any, res: any) {
           req.files["master"] != undefined
             ? req.files["master"][0].filename
             : " ",
-        passoutYear: parseInt(req.body.passoutYear) || 2020,
-        expectedPassoutYear: parseInt(req.body.expectedPassoutYear) || 2020,
-        marksMemo:
-          req.files["marksMemo"] != undefined
-            ? req.files["marksMemo"][0].filename
+        pass_out_year: parseInt(req.body.pass_out_year) || 2020,
+        expected_passout_year: parseInt(req.body.expected_passout_year) || 2020,
+        marks_memo:
+          req.files["marks_memo"] != undefined
+            ? req.files["marks_memo"][0].filename
             : " ",
-        TC: req.files["TC"] != undefined ? req.files["TC"][0].filename : " ",
-        bankAccountNo: req.body.bankAccountNo,
-        IFSCCode: req.body.IFSCCode,
-        BankName: req.body.BankName,
-        BranchName: req.body.BranchName,
-        accountHolderName: req.body.accountHolderName,
-        UPIId: req.body.UPIId || " ",
-        offerLetter:
-          req.files["offerLetter"] != undefined
-            ? req.files["offerLetter"][0].filename
+        TC: req.files["transfer_certificate"] != undefined ? req.files["transfer_certificate"][0].filename : " ",
+        bank_account_no: req.body.bank_account_no,
+        ifsc_code: req.body.ifsc_code,
+        bank_name: req.body.bank_name,
+        branch_name: req.body.branch_name,
+        account_holder_name: req.body.account_holder_name,
+        upi_id: req.body.upi_id || " ",
+        offer_letter:
+          req.files["offer_letter"] != undefined
+            ? req.files["offer_letter"][0].filename
             : " ",
-        incrementLetter:
-          req.files["incrementLetter"] != undefined
-            ? req.files["incrementLetter"][0].filename
+        increment_letter:
+          req.files["increment_letter"] != undefined
+            ? req.files["increment_letter"][0].filename
             : " ",
-        resignationLette:
-          req.files["resignationLette"] != undefined
-            ? req.files["resignationLette"][0].filename
+        resignation_letter:
+          req.files["resignation_letter"] != undefined
+            ? req.files["resignation_letter"][0].filename
             : " ",
-        payslips:
-          req.files["payslips"] != undefined
-            ? req.files["payslips"][0].filename
+        pay_slips:
+          req.files["pay_slips"] != undefined
+            ? req.files["pay_slips"][0].filename
             : " ",
-        experienceCertificate:
-          req.files["experienceCertificate"] != undefined
-            ? req.files["experienceCertificate"][0].filename
+        experience_certificate:
+          req.files["experience_certificate"] != undefined
+            ? req.files["experience_certificate"][0].filename
             : " ",
-        linkedInProfileLink: req.body.linkedInProfileLink || " ",
-        facebookProfileLink: req.body.facebookProfileLink || " ",
-        twitterProfileLink: req.body.twitterProfileLink || " ",
-        instagramProfileLink: req.body.instagramProfileLink || " ",
+        linkedin_profile_ink: req.body.linkedin_profile_ink || " ",
+        facebook_profile_link: req.body.facebook_profile_link || " ",
+        twitter_profile_link: req.body.twitter_profile_link || " ",
+        instagram_profile_link: req.body.instagram_profile_link || " ",
         employee_id: "0",
         status: "pending",
       },

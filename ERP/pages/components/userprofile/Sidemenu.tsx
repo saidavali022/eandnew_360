@@ -43,7 +43,7 @@ const Sidemenu = ({ data }) => {
                 Hire Date
               </Typography>
               <Typography sx={{ my: 2 }}>
-                {moment(sidemenu.Doj).utc().format("DD-MM-YYYY")}
+                {moment(sidemenu.doj).utc().format("DD-MM-YYYY")}
               </Typography>
               <Typography sx={{ my: 2 }} sidemenu="primary">
                 Designation
@@ -60,7 +60,7 @@ const Sidemenu = ({ data }) => {
               </Typography>
               <Typography sx={{ my: 2 }}>
                 {" "}
-                {sidemenu.noticePeriod != "" ? sidemenu.noticePeriod : "XX"}
+                {sidemenu.notice_period != "" ? sidemenu.notice_period : "XX"}
               </Typography>
             </Card>
             <Card sx={{ boxShadow: 0, p: 3 }}>
@@ -70,7 +70,7 @@ const Sidemenu = ({ data }) => {
 
               <Typography sx={{ my: 2 }}>
                 <LocationOnIcon sx={iconStyle} />{" "}
-                {sidemenu.houseNo +
+                {sidemenu.house_no +
                   " " +
                   sidemenu.street +
                   " " +
@@ -92,8 +92,8 @@ const Sidemenu = ({ data }) => {
               <Stack spacing={2} direction="row">
                 <NextLink
                   href={
-                    sidemenu.linkedInProfileLink != null
-                      ? sidemenu.linkedInProfileLink
+                    sidemenu.linkedin_profile_ink != null
+                      ? sidemenu.linkedin_profile_ink
                       : "#"
                   }
                 >
@@ -104,8 +104,8 @@ const Sidemenu = ({ data }) => {
                 </NextLink>
                 <NextLink
                   href={
-                    sidemenu.instagramProfileLink != null
-                      ? sidemenu.instagramProfileLink
+                    sidemenu.instagram_profile_link != null
+                      ? sidemenu.instagram_profile_link
                       : "#"
                   }
                 >
@@ -116,8 +116,8 @@ const Sidemenu = ({ data }) => {
                 </NextLink>
                 <NextLink
                   href={
-                    sidemenu.twitterProfileLink != null
-                      ? sidemenu.twitterProfileLink
+                    sidemenu.twitter_profile_link != null
+                      ? sidemenu.twitter_profile_link
                       : "#"
                   }
                 >
@@ -128,8 +128,8 @@ const Sidemenu = ({ data }) => {
                 </NextLink>
                 <NextLink
                   href={
-                    sidemenu.facebookProfileLink != null
-                      ? sidemenu.facebookProfileLink
+                    sidemenu.facebook_profile_link != null
+                      ? sidemenu.facebook_profile_link
                       : "#"
                   }
                 >

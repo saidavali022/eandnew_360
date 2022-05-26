@@ -26,8 +26,8 @@ import axios from "@utils/defaultImports";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", minWidth: 200, hide: true },
-  { field: "firstName", headerName: "First name", minWidth: 200 },
-  { field: "lastName", headerName: "Last name", minWidth: 200 },
+  { field: "first_name", headerName: "First name", minWidth: 200 },
+  { field: "last_name", headerName: "Last name", minWidth: 200 },
   {
     field: "email",
     headerName: "Email",
@@ -45,7 +45,7 @@ const columns: GridColDef[] = [
     headerName: "Gender",
   },
   {
-    field: "Doj",
+    field: "doj",
     minWidth: 250,
     headerName: "Doj",
   },
