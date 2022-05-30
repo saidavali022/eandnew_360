@@ -122,7 +122,10 @@ export async function createUser(req: any, res: any) {
           req.files["marks_memo"] != undefined
             ? req.files["marks_memo"][0].filename
             : " ",
-        TC: req.files["transfer_certificate"] != undefined ? req.files["transfer_certificate"][0].filename : " ",
+        transfer_certificate:
+          req.files["transfer_certificate"] != undefined
+            ? req.files["transfer_certificate"][0].filename
+            : " ",
         bank_account_no: req.body.bank_account_no,
         ifsc_code: req.body.ifsc_code,
         bank_name: req.body.bank_name,
@@ -155,19 +158,13 @@ export async function createUser(req: any, res: any) {
         instagram_profile_link: req.body.instagram_profile_link || " ",
         employee_id: "0",
         status: "pending",
+        password: "1234#",
       },
     });
-    // res.data = { data: data, status: 200, message: SUCCESS };
-    return res.status(200).json({ data: data, status: 200, message: SUCCESS });
+    res.status(200).json({ data: data, status: 200, message: SUCCESS });
+    return;
   } catch (error) {
     res.data = { data: { message: FAILED }, status: 300 };
     return;
   }
-
-  // .then((data: any) => {
-  //   return { data: data, status: 200, message: SUCCESS };
-  // })
-  // .catch((error: any) => {
-  //   return { data: { message: FAILED }, status: 300 };
-  // });
 }

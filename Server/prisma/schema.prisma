@@ -156,22 +156,22 @@ model users {
   email                  String            @db.VarChar(180)
   phone                  String            @db.VarChar(180)
   gender                 users_gender
-  country                String            @db.VarChar(180)
-  city                   String            @db.VarChar(180)
+  country                String?           @db.VarChar(180)
+  city                   String?           @db.VarChar(180)
   bank_name              String?           @db.VarChar(180)
   branch_name            String?           @db.VarChar(180)
   dob                    DateTime?         @db.DateTime(0)
   doj                    DateTime?         @db.DateTime(0)
   ifsc_code              String?           @db.VarChar(180)
   ssc                    String?           @db.VarChar(180)
-  TC                     String?           @db.VarChar(180)
+  transfer_certificate   String?           @db.VarChar(180)
   upi_id                 String?           @db.VarChar(180)
   aadhar_img             String?           @db.VarChar(180)
   aadhar_no              String?           @db.VarChar(180)
   account_holder_name    String?           @db.VarChar(180)
   bachelor               String?           @db.VarChar(180)
   bank_account_no        String?           @db.VarChar(180)
-  blood_group            String            @db.VarChar(180)
+  blood_group            String?           @db.VarChar(180)
   diploma                String?           @db.VarChar(180)
   expected_passout_year  Int?              @db.Year
   experience_certificate String?           @db.VarChar(180)
@@ -179,7 +179,7 @@ model users {
   father_name            String            @db.VarChar(180)
   first_name             String            @db.VarChar(180)
   guardian_phone         String?           @db.VarChar(180)
-  house_no               String            @db.VarChar(180)
+  house_no               String?           @db.VarChar(180)
   increment_letter       String?           @db.VarChar(180)
   instagram_profile_link String?           @db.VarChar(180)
   intermediate           String?           @db.VarChar(180)
@@ -187,8 +187,8 @@ model users {
   linkedin_profile_ink   String?           @db.VarChar(180)
   marks_memo             String?           @db.VarChar(180)
   master                 String?           @db.VarChar(180)
-  mother_name            String            @db.VarChar(180)
-  nationality            String            @db.VarChar(180)
+  mother_name            String?           @db.VarChar(180)
+  nationality            String?           @db.VarChar(180)
   offer_letter           String?           @db.VarChar(180)
   pancard_img            String?           @db.VarChar(180)
   pancard_no             String?           @db.VarChar(180)
@@ -196,22 +196,44 @@ model users {
   passport_size_photo    String?           @db.VarChar(180)
   pay_slips              String?           @db.VarChar(180)
   resignation_letter     String?           @db.VarChar(180)
-  state                  String            @db.VarChar(180)
-  street                 String            @db.VarChar(180)
+  state                  String?           @db.VarChar(180)
+  street                 String?           @db.VarChar(180)
   twitter_profile_link   String?           @db.VarChar(180)
   employee_id            String            @unique @default("0") @db.VarChar(255)
   status                 users_status      @default(pending)
-  compensation           String            @default("") @db.VarChar(180)
-  department             String            @default("") @db.VarChar(255)
-  designation            String            @default("") @db.VarChar(180)
-  highest_qualification  String            @db.VarChar(250)
-  notice_period          String            @default("") @db.VarChar(180)
-  password               String            @default("") @db.VarChar(250)
+  compensation           String?           @db.VarChar(180)
+  department             String?           @db.VarChar(255)
+  designation            String?           @db.VarChar(180)
+  highest_qualification  String?           @db.VarChar(250)
+  notice_period          String?           @db.VarChar(180)
+  password               String            @db.VarChar(250)
   username               String            @db.VarChar(180)
   role                   users_role        @default(user)
   attendance             attendance[]
   event_attendees        event_attendees[]
   events                 events[]
+  shifts                 shift_timings[]
+}
+
+model shift_timings {
+  id          Int      @id @default(autoincrement()) @db.UnsignedInt
+  employee_id String
+  employee    users    @relation(fields: [employee_id], references: [employee_id])
+  time_in     DateTime @db.Time()
+  time_out    DateTime @db.Time()
+  // timezone    String
+  created_at  DateTime @default(now()) @db.Timestamp()
+}
+
+model policies_attedance {
+  id            Int      @id @default(autoincrement()) @db.UnsignedInt
+  start_minutes Int?     @db.UnsignedSmallInt
+  end_minutes   Int?     @db.UnsignedSmallInt
+  point         Float    @db.Float
+  type          String //late_login
+  created_at    DateTime @default(now()) @db.Timestamp()
+  lop           String? // loss of pay
+  status        Boolean  @default(true)
 }
 
 enum checklists_check_status {
@@ -281,7 +303,7 @@ enum feedback_status {
 }
 
 enum task_status {
-  pendding
+  pending
   completed
   started
   EMPTY_ENUM_VALUE  @map("")

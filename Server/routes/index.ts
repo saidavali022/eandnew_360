@@ -6,8 +6,11 @@ import exit from "./exits.routes";
 import events from "./events.routes";
 import interview from "./interview.routes";
 import attendance from "./attendance.routes";
+import init from "./init.routes";
 
 import lettergenaration from "./lettergenaration.routes";
+router.use("/init", init);
+
 router.use("/users", users);
 router.use("/tasks", tasks);
 router.use("/exits", exit);

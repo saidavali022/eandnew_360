@@ -29,7 +29,6 @@
     "date-fns": "^2.28.0",
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
-    "multer": "^1.4.4",
-    "react-toastify": "^8.2.0"
+    "multer": "^1.4.4"
   }
 }

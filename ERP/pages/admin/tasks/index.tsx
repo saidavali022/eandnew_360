@@ -211,7 +211,7 @@ export default function Task() {
   function renderAction(params: GridRenderCellParams) {
     return (
       <Stack direction="row" spacing={2}>
-        {params?.row.status == "pendding" ? (
+        {params?.row.status == "pending" ? (
           <Stack direction="row" spacing={2}>
             <Button
               variant="contained"
