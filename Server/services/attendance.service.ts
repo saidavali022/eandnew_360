@@ -83,7 +83,73 @@ export const markUserAttendance = async (userId: string) => {
   }
 };
 
-export const updateUserAvailibilityStatus = async (userId: string) => {};
+export const updateUserAvailibilityStatus = async (
+  userId: string,
+  attendanceId: any,
+  presentAttendanceStatus: string,
+  status: attendance_available_status
+) => {
+  try {
+    let shift_time_in = new Date();
+    let shift_time_out = new Date();
+    if (status == "break") {
+      //Break start
+      const attendanceUpdate = await prisma.attendance.update({
+        where: {
+          id: parseInt(attendanceId),
+        },
+        data: {
+          status,
+          breaks: {
+            create: {
+              break_start: new Date(),
+            },
+          },
+        },
+      });
+
+      return attendanceUpdate;
+    }
+
+    if (
+      presentAttendanceStatus == "break" &&
+      (status == "available" || status == "salah")
+    ) {
+      //Break End
+      const userLastBreak = await prisma.breaks.findFirst({
+        where: {
+          attendance_Id: attendanceId,
+        },
+        orderBy: { id: "desc" },
+      });
+
+      if (userLastBreak != null) {
+        // if break exist and set break end
+        const break_id = userLastBreak.id;
+        const attendanceUpdate = await prisma.attendance.update({
+          where: {
+            id: attendanceId,
+          },
+          data: {
+            status: attendance_available_status.available,
+            breaks: {
+              update: {
+                where: {
+                  id: break_id,
+                },
+                data: { break_end: new Date() },
+              },
+            },
+          },
+        });
+        return attendanceUpdate;
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    throw Error("Error While Updating User Availability Status");
+  }
+};
 
 export const getUserAvailability = async (userId: string) => {
   //check if today present then get availability status from attendance

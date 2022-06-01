@@ -6,11 +6,11 @@ import {
   getUsersByempId,
   getUsersById,
   updateUsersById,
-  getAllUsers,
+  getAllUsersData,
   getUsersLoginDetails,
 } from "../controllers/users.controller";
 const router = Router();
-router.get("/info", getAllUsers);
+router.get("/info", getAllUsersData);
 
 router.post("/login", getUsersLoginDetails);
 

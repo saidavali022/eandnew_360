@@ -1,6 +1,6 @@
 import { filter } from "lodash";
 import { sentenceCase } from "change-case";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import type { ReactElement } from "react";
 import DashboardLayout from "@layouts/dashboard";
 import { differenceInMinutes } from "date-fns";
@@ -136,18 +136,21 @@ const EmployeesList = [
 
 export default function Attendance() {
   const globalState = useSelector((state) => state.globalState);
-
+  const [presentUser, setPresentUser] = useState({});
   const [calDate, setCalDate] = useState<Date | null>(new Date());
   const [designation, setDesignation] = useState("");
-  const [employeeId, setEmployeeId] = useState({});
+  const [employeeId, setEmployeeId] = useState("END1111");
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<readonly Employee[]>([]);
   const loading = open && options.length === 0;
-  useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
+  const handleUserSelect = (event: SelectChangeEvent) => {
+    setEmployeeId(event.target.value);
+  };
+  // useEffect(() => {
+  //   if (!open) {
+  //     setOptions([]);
+  //   }
+  // }, [open]);
   useEffect(() => {
     let active = true;
 
@@ -156,7 +159,7 @@ export default function Attendance() {
     }
 
     (async () => {
-      await sleep(1e3); // For demo purposes.
+      // await sleep(1e3); // For demo purposes.
 
       if (active) {
         setOptions([...EmployeesList]);
@@ -304,6 +307,7 @@ export default function Attendance() {
       },
     },
   ];
+
   return (
     <Page title="Attendance | E & D 360">
       <Container maxWidth="false">
@@ -342,13 +346,13 @@ export default function Attendance() {
           <Grid item xs="auto" md={3} container direction="column" spacing={2}>
             <Grid item>
               <Typography gutterBottom variant="subtitle1" component="div">
-                Mohammed Mushtaq
+                {presentUser?.username}
               </Typography>
               <Typography variant="body2" gutterBottom>
-                SUDO NAME: Robert Smith
+                SUDO NAME: {presentUser?.sudo_name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                ID: END1111
+                ID: {presentUser?.employee_id}
               </Typography>
             </Grid>
           </Grid>
@@ -367,6 +371,8 @@ export default function Attendance() {
                 isOptionEqualToValue={(option, value) =>
                   option.sudo_name === value.sudo_name
                 }
+                value={employeeId}
+                onChange={handleUserSelect}
                 getOptionLabel={(option) => option.sudo_name}
                 options={options}
                 loading={loading}

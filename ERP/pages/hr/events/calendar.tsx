@@ -107,10 +107,7 @@ const interviewAppointmentInitialState = {
 
 export default function Calendar() {
   // const calendarRef = useRef(null);
-  // const globalState = useSelector((state) => state.globalState);
-  const globalState = {
-    Employee_id: "END1111",
-  };
+  const globalState = useSelector((state) => state.globalState);
 
   const [openModel, setOpenModel] = useState(false);
   const [tabIndex, setTabIndex] = useState("appointment");

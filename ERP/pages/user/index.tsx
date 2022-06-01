@@ -15,7 +15,6 @@ import UserDashboardLayout from "@layouts/userdashboard";
 import Page from "@components/Page";
 import NextHead from "next/head";
 import { useState, useEffect, ReactElement } from "react";
-import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import {
   AppTasks,
@@ -31,39 +30,13 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from "@sections/dashboard/app";
-import { useSelector } from "react-redux";
-import axios from "@utils/defaultImports";
+
+import AttendanceStatus from "@sections/dashboard/user/AttendanceStatus";
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
   const router = useRouter();
-  const globalState = useSelector((state) => state.globalState);
-  const [availabilityStatus, setAvailabilityStatus] = useState("unavailable");
-  const handleAvailabilityChange = (event: SelectChangeEvent) => {
-    axios
-      .put(`/attendance/${globalState.Employee_id}/availability`, {
-        status: event.target.value,
-      })
-      .then((res) => {
-        console.info("update status to - ", event.target.value);
-        setAvailabilityStatus(res.data.status);
-      });
-  };
-  useEffect(() => {
-    axios
-      .get(`/attendance/${globalState.Employee_id}/availability`)
-      .then((res: any) => {
-        console.info("res - availibility - ", res.data);
-        if (res.data.status == "unavailable") {
-          axios.post(`/attendance/${globalState.Employee_id}`).then((res) => {
-            console.info("mark attendance - ", res.data);
-            setAvailabilityStatus(res.data.status);
-          });
-        } else {
-          setAvailabilityStatus(res.data.status);
-        }
-      });
-  }, []);
+
   return (
     <>
       <NextHead>
@@ -80,24 +53,7 @@ export default function DashboardApp() {
             justifyContent="space-between"
             mb={5}
           >
-            {" "}
-            <FormControl sx={{ m: 1, minWidth: 150 }}>
-              <InputLabel id="availability-status">Status</InputLabel>
-              <Select
-                labelId="availability-status"
-                id="availability-status-select"
-                value={availabilityStatus}
-                label="Status"
-                onChange={handleAvailabilityChange}
-              >
-                <MenuItem value="notavailable">
-                  <em>Not Available</em>
-                </MenuItem>
-                <MenuItem value="available">Available</MenuItem>
-                <MenuItem value="break">Break</MenuItem>
-                <MenuItem value="salah">Salah</MenuItem>
-              </Select>
-            </FormControl>
+            <AttendanceStatus />
           </Stack>
           {/* <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={3}>

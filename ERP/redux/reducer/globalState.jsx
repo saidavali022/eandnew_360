@@ -16,6 +16,12 @@ const globalState = (state = initialState, action) => {
         username: action.payload.username,
       };
     }
+    case "users": {
+      return {
+        ...state,
+        users: action.payload.users,
+      };
+    }
     default:
       return state;
   }

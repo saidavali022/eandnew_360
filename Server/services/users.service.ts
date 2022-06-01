@@ -8,15 +8,21 @@ var SUCCESS = "Data Interted Successfully";
 var FAILED = "Data Not Interted";
 
 export async function getAllUsers(req: any, res: any) {
-  return await prisma.users.findMany({
+  const usersList = await prisma.users.findMany({
     where: {
       status: req.params.status,
     },
   });
+  return usersList.map(({ password, ...usersData }) => usersData);
 }
 
 export async function getAllUsersData(req: any, res: any) {
-  return await prisma.users.findMany({});
+  const usersList = await prisma.users.findMany({
+    where: {
+      status: req.query.status,
+    },
+  });
+  return usersList.map(({ password, ...usersData }) => usersData);
 }
 
 export async function getUsersById(req: any, res: any) {

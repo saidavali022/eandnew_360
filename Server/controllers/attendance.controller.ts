@@ -175,68 +175,22 @@ export const updateUserAvailibilityStatus = async (
           created_at: "desc",
         },
       });
-      console.log("attendance - ", attendance);
       if (attendance == null) {
         throw new Error("Mark Attendance First before requesting for a break");
       }
-      attendId = attendance?.id;
+      attendId = attendance.id;
     }
 
-    if (status == "break") {
-      //Break start
-      const attendanceUpdate = await prisma.attendance.update({
-        where: {
-          id: attendId,
-        },
-        data: {
-          status,
-          breaks: {
-            create: {
-              break_start: new Date(),
-            },
-          },
-        },
-      });
-      res.status(200).json(attendanceUpdate);
-      return;
-    }
+    const updatedAttendanceStatus =
+      await AttendanceService.updateUserAvailibilityStatus(
+        empId,
+        attendId,
+        presentUserStatus.status,
+        status
+      );
 
-    let break_id;
-    if (
-      presentUserStatus.status == "break" &&
-      (status == "available" || status == "salah")
-    ) {
-      //Break End
-      const userLastBreak = await prisma.breaks.findFirst({
-        where: {
-          attendance_Id: attendId,
-        },
-        orderBy: { id: "desc" },
-      });
-
-      if (userLastBreak != null) {
-        // if break exist and set break end
-        break_id = userLastBreak.id;
-        const attendanceUpdate = await prisma.attendance.update({
-          where: {
-            id: attendId,
-          },
-          data: {
-            status: attendance_available_status.available,
-            breaks: {
-              update: {
-                where: {
-                  id: break_id,
-                },
-                data: { break_end: new Date() },
-              },
-            },
-          },
-        });
-        res.status(200).json(attendanceUpdate);
-        return;
-      }
-    }
+    res.status(200).json(updatedAttendanceStatus);
+    return;
   } catch (error: any) {
     console.error(error);
     res.status(400).json({ message: error.message });

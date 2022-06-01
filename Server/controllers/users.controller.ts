@@ -8,7 +8,7 @@ export const getUsers = async (req: Request, res: Response) => {
     .catch((err) => res.send(err));
 };
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsersData = async (req: Request, res: Response) => {
   usersService
     .getAllUsersData(req, res)
     .then((data) => res.send(data))
