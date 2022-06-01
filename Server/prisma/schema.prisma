@@ -8,17 +8,25 @@ datasource db {
 }
 
 model attendance {
-  id          Int       @id @default(autoincrement()) @db.UnsignedInt
-  date_in     DateTime  @db.Date
-  shift_in    DateTime  @db.Time
-  shift_out   DateTime  @db.Time
-  log_in      DateTime  @default(now())
-  log_out     DateTime?
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
-  employee_id String?
-  users       users?    @relation(fields: [employee_id], references: [employee_id], map: "Attendance_user_id_fkey")
+  id          Int                         @id @default(autoincrement()) @db.UnsignedInt
+  date_in     DateTime                    @db.Date
+  shift_in    DateTime                    @db.Time
+  shift_out   DateTime                    @db.Time
+  log_in      DateTime                    @default(now()) @db.Time
+  log_out     DateTime?                   @db.Time
+  created_at  DateTime                    @default(now())
+  updated_at  DateTime                    @updatedAt
+  employee_id String
+  users       users?                      @relation(fields: [employee_id], references: [employee_id], map: "Attendance_user_id_fkey")
   breaks      breaks[]
+  status      attendance_available_status @default(unavailable)
+}
+
+enum attendance_available_status {
+  break
+  available
+  unavailable
+  salah
 }
 
 model breaks {
@@ -40,8 +48,8 @@ model users {
   city                   String?           @db.VarChar(180)
   bank_name              String?           @db.VarChar(180)
   branch_name            String?           @db.VarChar(180)
-  dob                    DateTime?         @db.DateTime(0)
-  doj                    DateTime?         @db.DateTime(0)
+  dob                    DateTime?         @db.Date
+  doj                    DateTime?         @db.Date
   ifsc_code              String?           @db.VarChar(180)
   ssc                    String?           @db.VarChar(180)
   transfer_certificate   String?           @db.VarChar(180)
@@ -99,8 +107,8 @@ model shift_timings {
   id          Int      @id @default(autoincrement()) @db.UnsignedInt
   employee_id String
   employee    users    @relation(fields: [employee_id], references: [employee_id])
-  shift_in    DateTime @db.Time()
-  shift_out   DateTime @db.Time()
+  shift_in    DateTime @db.Time
+  shift_out   DateTime @db.Time
   created_at  DateTime @default(now()) @db.Timestamp()
 }
 

@@ -11,6 +11,9 @@ const globalState = (state = initialState, action) => {
         Employee_id: action.payload.employee_id,
         email: action.payload.email,
         role: action.payload.role,
+        department: action.payload.department,
+        designation: action.payload.designation,
+        username: action.payload.username,
       };
     }
     default:

@@ -1,4 +1,13 @@
-import { addMinutes, subMinutes, subDays, addDays, addHours } from "date-fns";
+import {
+  addMinutes,
+  subMinutes,
+  subDays,
+  addDays,
+  addHours,
+  format,
+  formatRFC3339,
+  set,
+} from "date-fns";
 import Express, { Request, Response, NextFunction } from "express";
 import prisma from "../utils/prisma";
 interface TypedRequest extends Request {
@@ -20,6 +29,7 @@ export const initTables = async (req: TypedRequest, res: Response) => {
         role: "user",
         blood_group: "AB+",
         city: "Hyd",
+        designation: "software development",
         country: "India",
         email: "eandddeveloper2@gmail.com",
         father_name: "Mohammed",
@@ -34,7 +44,11 @@ export const initTables = async (req: TypedRequest, res: Response) => {
         password: "1234#",
         attendance: {
           create: {
-            log_in: new Date(),
+            date_in: formatRFC3339(new Date()),
+            log_in: new Date().toISOString(),
+            shift_in: new Date().toISOString(),
+            shift_out: addHours(new Date(), 9),
+            status: "available",
             breaks: {
               create: {
                 break_start: addMinutes(new Date(), 200),
@@ -59,6 +73,7 @@ export const initTables = async (req: TypedRequest, res: Response) => {
         gender: "Male",
         last_name: "lname",
         nationality: "Indian",
+        designation: "human resource management",
         highest_qualification: "Bachelors",
         phone: "8765456789",
         state: "Telengana",
@@ -107,8 +122,8 @@ export const initTables = async (req: TypedRequest, res: Response) => {
 
     const userShift = await prisma.shift_timings.create({
       data: {
-        time_in: "08:00:00",
-        time_out: "17:00:00",
+        shift_in: set(new Date(), { hours: 8, minutes: 0, seconds: 0 }),
+        shift_out: set(new Date(), { hours: 17, minutes: 0, seconds: 0 }),
         employee_id: "END1111",
       },
     });

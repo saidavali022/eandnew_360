@@ -1,6 +1,7 @@
 import prisma from "../utils/prisma";
-import { addDays, format } from "date-fns";
-
+import { addDays, format, set, addHours } from "date-fns";
+import { attendance_available_status } from "@prisma/client";
+import * as ShiftService from "../services/shifts.service";
 export const getUserAttendance = async (userId: string, date: string) => {
   try {
     const user: any = await prisma.users.findUnique({
@@ -11,6 +12,9 @@ export const getUserAttendance = async (userId: string, date: string) => {
     });
 
     let attendance_start_date = new Date();
+    if (date == null) {
+      date = format(new Date(), "yyyy-mm");
+    }
     attendance_start_date.setMonth(new Date(date).getMonth());
     attendance_start_date.setFullYear(new Date(date).getFullYear());
     attendance_start_date.setDate(new Date(user?.doj).getDate());
@@ -22,7 +26,7 @@ export const getUserAttendance = async (userId: string, date: string) => {
     const emp_attendance = await prisma.attendance.findMany({
       where: {
         employee_id: userId,
-        log_in: {
+        date_in: {
           gte: attendance_start_date,
           lte: attendance_end_date,
         },
@@ -36,9 +40,120 @@ export const getUserAttendance = async (userId: string, date: string) => {
         },
       },
     });
+
     return emp_attendance;
   } catch (e) {
     console.error(e);
     throw Error("Error While Getting User Attendance");
+  }
+};
+
+export const markUserAttendance = async (userId: string) => {
+  try {
+    //check if todays attendance is made else mark attendance
+    const isUserPresentToday = await userTodayAttendance(userId);
+
+    if (isUserPresentToday != null) {
+      return { message: "Attendance Already Marked", status: 409 };
+    }
+
+    let shift_in = new Date();
+    let shift_out = addHours(new Date(), 9);
+    const userShift = await ShiftService.getUserShift(userId);
+
+    if (userShift != null) {
+      shift_in = userShift.shift_in;
+      shift_out = userShift.shift_out;
+    }
+
+    const markAttendance = await prisma.attendance.create({
+      data: {
+        employee_id: userId,
+        shift_in,
+        shift_out,
+        date_in: new Date(),
+        log_in: new Date(),
+        status: attendance_available_status.available,
+      },
+    });
+    return markAttendance;
+  } catch (error) {
+    console.error(error);
+    throw Error("Error While Marking User Attendance");
+  }
+};
+
+export const updateUserAvailibilityStatus = async (userId: string) => {};
+
+export const getUserAvailability = async (userId: string) => {
+  //check if today present then get availability status from attendance
+  try {
+    const isUserPresentToday = await userTodayAttendance(userId);
+
+    if (isUserPresentToday == null) {
+      return { status: "unavailable" };
+    }
+
+    return { status: isUserPresentToday.status };
+  } catch (error) {
+    console.error(error);
+    throw Error("Error While Getting Availability Status");
+  }
+};
+
+export const userTodayAttendance = async (userId: string) => {
+  let shift_in = new Date();
+  let shift_out = addHours(new Date(), 9);
+  try {
+    const userShift = await ShiftService.getUserShift(userId);
+
+    if (userShift != null) {
+      shift_in = userShift.shift_in;
+      shift_out = userShift.shift_out;
+    }
+
+    const date_in = new Date(format(new Date(), "yyyy-MM-dd"));
+    const an_hour_before_shift_log_in = set(shift_in, {
+      hours: shift_in.getHours() - 1,
+    });
+
+    const checkTodaysAttendance = await prisma.attendance.findFirst({
+      where: {
+        employee_id: userId,
+        date_in,
+        log_in: {
+          gte: an_hour_before_shift_log_in,
+        },
+      },
+      orderBy: {
+        created_at: "desc",
+      },
+    });
+    return checkTodaysAttendance;
+  } catch (error) {
+    console.error(error);
+    throw Error("Error While Checking User Attendance for Today");
+  }
+};
+
+export const markUserLogOff = async (userId: string) => {
+  try {
+    const userAvailability = await getUserAvailability(userId);
+    if (userAvailability.status != "available") {
+      throw new Error("Change Status to Available before logOff");
+    }
+    const userAttendance = await userTodayAttendance(userId);
+
+    const userLogOff = await prisma.attendance.update({
+      where: {
+        id: userAttendance?.id,
+      },
+      data: {
+        log_out: new Date(),
+      },
+    });
+    return userAttendance;
+  } catch (error) {
+    throw new Error("Error While ");
   }
 };

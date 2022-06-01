@@ -117,7 +117,9 @@ export function fTimeDistanceInMinutes(dateLeft: string, dateRight: string) {
     unit: "minute",
   })
     .replace(" hours", "")
-    .replace(" minutes", "");
+    .replace(" minutes", "")
+    .replace(" hour", "")
+    .replace(" minute", "");
 }
 export function fAddHours(date: string, amount: number) {
   return addHours(new Date(date), amount).toString();

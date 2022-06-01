@@ -1,5 +1,8 @@
+import prisma from "../utils/prisma";
+import { attendance_available_status } from "@prisma/client";
 import Express, { Request, Response, NextFunction } from "express";
 import * as AttendanceService from "../services/attendance.service";
+import * as ShiftService from "../services/shifts.service";
 import {
   set,
   add,
@@ -8,6 +11,7 @@ import {
   addMilliseconds,
   setMilliseconds,
   setSeconds,
+  format,
 } from "date-fns";
 
 interface TypedRequest extends Request {
@@ -16,7 +20,28 @@ interface TypedRequest extends Request {
   };
   query: {
     date: string;
-    doj: string;
+    doj?: string;
+  };
+  body: {
+    status: attendance_available_status;
+    attendId: number;
+  };
+}
+
+interface IAttendanceUpdateData {
+  status: string;
+  breaks: {
+    create?: {
+      break_start?: Date;
+    };
+    update?: {
+      where: {
+        id: number;
+      };
+      data: {
+        break_end?: Date;
+      };
+    };
   };
 }
 
@@ -35,60 +60,186 @@ export const getUserAttendance = async (req: TypedRequest, res: Response) => {
 
     res.status(200).json(emp_attendance);
     return;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    res.status(400).json(error);
+    res.status(400).json({ error, message: error.message });
+    return;
+  }
+};
+
+export const getUserAvailability = async (req: TypedRequest, res: Response) => {
+  const { empId } = req.params;
+  try {
+    const presentUserStatus = await AttendanceService.getUserAvailability(
+      empId
+    );
+
+    res.status(200).json(presentUserStatus);
+    return;
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
+    return;
+  }
+};
+
+export const markUserAttendance = async (req: TypedRequest, res: Response) => {
+  const { empId } = req.params;
+  try {
+    const markAttendance = await AttendanceService.markUserAttendance(empId);
+    res.status(201).json(markAttendance);
+    return;
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
+    return;
+  }
+};
+
+export const markUserLogOff = async (req: TypedRequest, res: Response) => {
+  const { empId } = req.params;
+  try {
+    const checkUserAvailable = await AttendanceService.getUserAvailability(
+      empId
+    );
+    if (checkUserAvailable.status != "available") {
+      throw new Error("First Change Your Status to Available then Log out");
+    }
+
+    const markLogOff = await AttendanceService.markUserLogOff(empId);
+    return res.status(200).json(markLogOff);
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
     return;
   }
 };
 
 export const updateUserAvailibilityStatus = async (
-  req: Request,
+  req: TypedRequest,
   res: Response
 ) => {
   const { empId } = req.params;
-  const { status, attendId } = req.body;
+  const { status } = req.body;
   let shift_time_in = new Date();
   let shift_time_out = new Date();
-
+  let attendId;
   try {
-    // get user shift timings
-    const userShift = await prisma.shift_timings.findFirst({
-      where: {
-        employee_id: empId,
-      },
-      orderBy: {
-        created_at: "desc",
-      },
-    });
-
-    if (userShift != null) {
-      shift_time_in = userShift.time_in;
-      shift_time_out = userShift.time_out;
+    if (status == "unavailable") {
+      throw new Error("Cannot Set Unavailable");
     }
 
-    const user_shift_login_time = set(new Date(), {
-      hours: shift_time_in.getHours(),
-      minutes: shift_time_in.getMinutes(),
-      seconds: 0,
-      milliseconds: 0,
-    });
+    const presentUserStatus = await AttendanceService.getUserAvailability(
+      empId
+    );
 
-    const user_shift_logout_time = add(user_shift_login_time, {
-      hours: shift_time_out.getHours(),
-      minutes: shift_time_out.getMinutes(),
-    });
+    if (status == presentUserStatus.status) {
+      throw new Error(`Status is already ${status}`);
+    }
 
-    const availablility = await prisma.attendance.upsert({
-      where: {
-        id: attendId,
-      },
-      update: {},
-      create: {},
-    });
-  } catch (error) {
+    if (
+      presentUserStatus.status == "unavailable" &&
+      (status == "available" || status == "break" || status == "salah")
+    ) {
+      throw new Error("mark attendance before requesting for update of status");
+    }
+
+    // get user shift timings
+    const userShift = await ShiftService.getUserShift(empId);
+
+    if (userShift != null) {
+      shift_time_in = userShift.shift_in;
+      shift_time_out = userShift.shift_out;
+    }
+
+    if (
+      presentUserStatus.status == "available" ||
+      presentUserStatus.status == "break" ||
+      presentUserStatus.status == "salah"
+    ) {
+      //get get attendacne id
+      const date_in = new Date(format(new Date(), "yyyy-MM-dd"));
+      const an_hour_before_shift_log_in = set(shift_time_in, {
+        hours: shift_time_in.getHours() - 1,
+      });
+
+      const attendance = await prisma.attendance.findFirst({
+        where: {
+          employee_id: empId,
+          date_in,
+          log_in: {
+            gte: an_hour_before_shift_log_in,
+          },
+        },
+        orderBy: {
+          created_at: "desc",
+        },
+      });
+      console.log("attendance - ", attendance);
+      if (attendance == null) {
+        throw new Error("Mark Attendance First before requesting for a break");
+      }
+      attendId = attendance?.id;
+    }
+
+    if (status == "break") {
+      //Break start
+      const attendanceUpdate = await prisma.attendance.update({
+        where: {
+          id: attendId,
+        },
+        data: {
+          status,
+          breaks: {
+            create: {
+              break_start: new Date(),
+            },
+          },
+        },
+      });
+      res.status(200).json(attendanceUpdate);
+      return;
+    }
+
+    let break_id;
+    if (
+      presentUserStatus.status == "break" &&
+      (status == "available" || status == "salah")
+    ) {
+      //Break End
+      const userLastBreak = await prisma.breaks.findFirst({
+        where: {
+          attendance_Id: attendId,
+        },
+        orderBy: { id: "desc" },
+      });
+
+      if (userLastBreak != null) {
+        // if break exist and set break end
+        break_id = userLastBreak.id;
+        const attendanceUpdate = await prisma.attendance.update({
+          where: {
+            id: attendId,
+          },
+          data: {
+            status: attendance_available_status.available,
+            breaks: {
+              update: {
+                where: {
+                  id: break_id,
+                },
+                data: { break_end: new Date() },
+              },
+            },
+          },
+        });
+        res.status(200).json(attendanceUpdate);
+        return;
+      }
+    }
+  } catch (error: any) {
     console.error(error);
-    res.status(400).json(error);
+    res.status(400).json({ message: error.message });
     return;
   }
 };

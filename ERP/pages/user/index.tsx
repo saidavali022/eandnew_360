@@ -14,7 +14,7 @@ import UserDashboardLayout from "@layouts/userdashboard";
 // components
 import Page from "@components/Page";
 import NextHead from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactElement } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import {
@@ -31,38 +31,39 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from "@sections/dashboard/app";
-
+import { useSelector } from "react-redux";
+import axios from "@utils/defaultImports";
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
   const router = useRouter();
-  const { data: session, status } = useSession();
-  const [availabilityStatus, setAvailabilityStatus] = useState();
+  const globalState = useSelector((state) => state.globalState);
+  const [availabilityStatus, setAvailabilityStatus] = useState("unavailable");
   const handleAvailabilityChange = (event: SelectChangeEvent) => {
-    setAvailabilityStatus(event.target.value);
+    axios
+      .put(`/attendance/${globalState.Employee_id}/availability`, {
+        status: event.target.value,
+      })
+      .then((res) => {
+        console.info("update status to - ", event.target.value);
+        setAvailabilityStatus(res.data.status);
+      });
   };
-  console.log("session- ", session);
-  const loading = status === "loading";
-  // const [content, setContent] = useState();
   useEffect(() => {
-    if (!session) {
-      // signOut({ redirect: false, callbackUrl: "http://localhost:3000/" });
-      // router.push("/");
-    }
-    //   const fetchData = async () => {
-    //     const res = await fetch("/api/examples/protected");
-    //     const json = await res.json();
-    //     if (json.content) {
-    //       setContent(json.content);
-    //     }
-    //   };
-    //   fetchData();
-  }, [loading]);
-
-  // When rendering client side don't display anything until loading is complete
-  if (typeof window !== "undefined" && loading) return null;
-  // If no session exists, display access denied message
-
+    axios
+      .get(`/attendance/${globalState.Employee_id}/availability`)
+      .then((res: any) => {
+        console.info("res - availibility - ", res.data);
+        if (res.data.status == "unavailable") {
+          axios.post(`/attendance/${globalState.Employee_id}`).then((res) => {
+            console.info("mark attendance - ", res.data);
+            setAvailabilityStatus(res.data.status);
+          });
+        } else {
+          setAvailabilityStatus(res.data.status);
+        }
+      });
+  }, []);
   return (
     <>
       <NextHead>
@@ -89,12 +90,12 @@ export default function DashboardApp() {
                 label="Status"
                 onChange={handleAvailabilityChange}
               >
-                <MenuItem value="">
-                  <em>None</em>
+                <MenuItem value="notavailable">
+                  <em>Not Available</em>
                 </MenuItem>
-                <MenuItem value={1}>Available</MenuItem>
-                <MenuItem value={2}>Break</MenuItem>
-                <MenuItem value={3}>Salah</MenuItem>
+                <MenuItem value="available">Available</MenuItem>
+                <MenuItem value="break">Break</MenuItem>
+                <MenuItem value="salah">Salah</MenuItem>
               </Select>
             </FormControl>
           </Stack>
@@ -150,6 +151,6 @@ export default function DashboardApp() {
   );
 }
 
-DashboardApp.getLayout = (page) => (
+DashboardApp.getLayout = (page: ReactElement) => (
   <UserDashboardLayout>{page}</UserDashboardLayout>
 );

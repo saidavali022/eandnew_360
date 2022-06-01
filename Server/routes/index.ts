@@ -7,17 +7,16 @@ import events from "./events.routes";
 import interview from "./interview.routes";
 import attendance from "./attendance.routes";
 import init from "./init.routes";
-
+import shifts from "./shifts.routes";
 import lettergenaration from "./lettergenaration.routes";
 router.use("/init", init);
-
 router.use("/users", users);
+router.use("/attendance", attendance);
 router.use("/tasks", tasks);
 router.use("/exits", exit);
+router.use("/shifts", shifts);
 router.use("/lettergenaration", lettergenaration);
-
 router.use("/users/events/interview", interview);
 router.use("/users/events", events);
-router.use("/attendance", attendance);
 
 export default router;

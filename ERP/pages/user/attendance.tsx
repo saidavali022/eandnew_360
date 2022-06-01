@@ -22,7 +22,6 @@ import {
   fAddHours,
 } from "@utils/formatTime";
 import NextLink from "next/link";
-import { getSession, useSession } from "next-auth/react";
 import { IBreak } from "@utils/interfaces/common";
 // material
 import {
@@ -44,136 +43,11 @@ import {
 // components
 import Page from "@components/Page";
 import Label from "@components/Label";
-import { colorStatusPriority, renderBreakPills } from "@utils/pillColor";
-
-let total_work_hours;
-
-const user = {
-  shift: {
-    duration: 9,
-    units: "hour",
-  },
-};
-
-function getSum(total: number, num: number) {
-  return total + Math.floor(num);
-}
-
-function getTotalBreakTime(b: IBreak[]) {
-  let breaks_minutes = b.map((b: IBreak) =>
-    fdifferenceInMinutes(b.break_start, b.break_end)
-  );
-  const total_break_time = breaks_minutes.reduce(getSum, 0);
-  return Math.abs(total_break_time);
-}
-
-const columns: GridColDef[] = [
-  // {
-  //   field: "id",
-  //   hide: true,
-  //   hideable: false,
-  // },
-  {
-    field: "date",
-    headerName: "Date",
-    type: "date",
-    width: 100,
-    hideable: false,
-    valueGetter: (params: GridValueGetterParams) =>
-      params.row?.log_in && new Date(params.row.log_in),
-    // valueGetter: (params: GridValueGetterParams) => {
-    //   return fDate(params.row.log_in);
-    // },
-  },
-  // {
-  //   field: "shift_time",
-  //   headerName: "Shift",
-  //   valueGetter: (params: GridValueGetterParams) => {
-  //     return "02:00 PM";
-  //   },
-  // },
-  {
-    field: "log_in",
-    headerName: "Log In",
-    width: 90,
-    valueGetter: (params: GridValueGetterParams) => {
-      return fTime(params.row.log_in);
-    },
-  },
-  {
-    field: "breaks",
-    headerName: "Breaks",
-    minWidth: 150,
-    type: "string",
-    flex: 1,
-    renderCell: (params: GridRenderCellParams) =>
-      renderBreakPills(params.row?.breaks),
-  },
-  {
-    field: "log_out",
-    headerName: "Log Out",
-    width: 90,
-    valueGetter: (params: GridValueGetterParams) => {
-      return fTime(params.row.log_out);
-    },
-  },
-  {
-    field: "over_time",
-    headerName: "Over Time",
-    minWidth: 50,
-    flex: 1,
-    valueGetter: (params: GridValueGetterParams) => {
-      let designation = "LG";
-      const employee_shift_hours = 9;
-      let shift_end = fAddHours(params.row.log_in, employee_shift_hours);
-
-      if (params.row.log_out == null) {
-        return "-";
-      }
-
-      let over_time_minutes = Math.abs(
-        fdifferenceInMinutes(shift_end, params.row.log_out)
-      );
-
-      if (designation === "SD" && over_time_minutes > 30) {
-        return fMinutesToWords(over_time_minutes);
-      } else if (["LG", "CS"].includes(designation) && over_time_minutes > 60) {
-        return fMinutesToWords(over_time_minutes);
-      } else {
-        return "-";
-      }
-    },
-  },
-  {
-    field: "total_break",
-    headerName: "Total Break",
-    minWidth: 130,
-    valueGetter: (params: GridValueGetterParams) => {
-      return fMinutesToWords(getTotalBreakTime(params.row.breaks));
-    },
-  },
-  {
-    field: "total_available_time",
-    headerName: "Total Available Time",
-    minWidth: 150,
-    flex: 1,
-    valueGetter: (params: GridValueGetterParams) => {
-      return fDistanceInHrsAndMinutes(params.row.log_out, params.row.log_in);
-    },
-  },
-  {
-    field: "total_work_hours",
-    headerName: "Total Work Hours",
-    minWidth: 150,
-    flex: 1,
-    valueGetter: (params: GridValueGetterParams) => {
-      return fDistanceInHrsAndMinutes(
-        fSubMinutes(params.row.log_out, getTotalBreakTime(params.row.breaks)),
-        params.row.log_in
-      );
-    },
-  },
-];
+import {
+  colorStatusPriority,
+  renderBreakPills,
+  getTotalBreakTime,
+} from "@utils/pillColor";
 
 const defaultRows = [
   {
@@ -233,6 +107,141 @@ export default function Attendance() {
   const handleCalDateChange = (newValue: Date | null) => {
     setCalDate(newValue);
   };
+
+  const columns: GridColDef[] = [
+    // {
+    //   field: "id",
+    //   hide: true,
+    //   hideable: false,
+    // },
+    {
+      field: "date_in",
+      headerName: "Date",
+      type: "date",
+      width: 100,
+      hideable: false,
+      valueGetter: (params: GridValueGetterParams) =>
+        params.row?.log_in && new Date(params.row.date_in),
+    },
+    {
+      field: "shift_in",
+      headerName: "Shift In",
+      minWidth: 90,
+      type: "string",
+      valueGetter: (params: GridValueGetterParams) => {
+        return fTime(params.row.shift_in);
+      },
+    },
+    {
+      field: "log_in",
+      headerName: "Log In",
+      width: 90,
+      valueGetter: (params: GridValueGetterParams) => {
+        return fTime(params.row.log_in);
+      },
+    },
+    {
+      field: "breaks",
+      headerName: "Breaks",
+      minWidth: 150,
+      type: "string",
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) =>
+        renderBreakPills(params.row?.breaks),
+    },
+    {
+      field: "shift_out",
+      headerName: "Shift Out",
+      minWidth: 90,
+      type: "string",
+      valueGetter: (params: GridValueGetterParams) => {
+        return fTime(params.row.shift_out);
+      },
+    },
+    {
+      field: "log_out",
+      headerName: "Log Out",
+      width: 90,
+      valueGetter: (params: GridValueGetterParams) => {
+        if (params.row.log_out == null) {
+          return "-";
+        }
+        return fTime(params.row.log_out);
+      },
+    },
+    {
+      field: "over_time",
+      headerName: "Over Time",
+      minWidth: 90,
+      flex: 1,
+      valueGetter: (params: GridValueGetterParams) => {
+        // return fdifferenceInMinutes(params.row.shift_out, params.row.shift_in);
+        if (params.row.log_out == null) {
+          return "-";
+        }
+
+        let department = globalState?.department;
+        const shiftMinutes = fdifferenceInMinutes(
+          params.row.shift_out,
+          params.row.shift_in
+        );
+        const workedMinute = fdifferenceInMinutes(
+          params.row.log_out,
+          params.row.log_in
+        );
+        let over_time_minutes = workedMinute - shiftMinutes;
+        console.info(
+          "user over time ",
+          over_time_minutes,
+          workedMinute,
+          shiftMinutes
+        );
+        console.info("department", department);
+        if (department === "software development" && over_time_minutes > 30) {
+          return fMinutesToWords(over_time_minutes);
+        }
+
+        if (
+          ["lead generation", "tech support"].includes(department) &&
+          over_time_minutes > 60
+        ) {
+          return fMinutesToWords(over_time_minutes);
+        }
+
+        return "-";
+      },
+    },
+    {
+      field: "total_break",
+      headerName: "Total Break",
+      minWidth: 130,
+      valueGetter: (params: GridValueGetterParams) => {
+        return fMinutesToWords(getTotalBreakTime(params.row.breaks));
+      },
+    },
+    {
+      field: "total_available_time",
+      headerName: "Total Available Time",
+      minWidth: 150,
+      flex: 1,
+      valueGetter: (params: GridValueGetterParams) => {
+        return fDistanceInHrsAndMinutes(params.row.log_out, params.row.log_in);
+      },
+    },
+    {
+      field: "total_work_hours",
+      headerName: "Total Work Hours",
+      minWidth: 150,
+      flex: 1,
+      valueGetter: (params: GridValueGetterParams) => {
+        return fDistanceInHrsAndMinutes(
+          fSubMinutes(params.row.log_out, getTotalBreakTime(params.row.breaks)),
+          params.row.log_in
+        );
+      },
+    },
+  ];
+
   return (
     <Page title="Attendance | E & D 360">
       <Container maxWidth="false">
