@@ -130,10 +130,7 @@ export default function Calendar() {
     const eventId = event.event._def.publicId;
 
     axios
-      .get(
-        `http://localhost:3001/users/events/${globalState.Employee_id}/${eventId}`,
-        {}
-      )
+      .get(`/users/events/${globalState.Employee_id}/${eventId}`, {})
       .then((res: any) => {
         if (res.status !== 200) {
           toast.error("Something went Wrong", {

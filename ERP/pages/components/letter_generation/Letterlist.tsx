@@ -30,7 +30,7 @@ const Letterlist = (props) => {
   function renderAction(params: GridRenderCellParams) {
     return (
       <Stack direction="row" spacing={2}>
-        <Link href={"http://localhost:3001/" + params.row.letter}>
+        <Link href={"#" + params.row.letter}>
           <a target="_blank">
             {" "}
             <InsertDriveFileIcon color="primary" />

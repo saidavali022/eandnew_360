@@ -106,7 +106,3 @@ export default function DashboardApp() {
     </>
   );
 }
-
-DashboardApp.getLayout = (page: ReactElement) => (
-  <UserDashboardLayout>{page}</UserDashboardLayout>
-);

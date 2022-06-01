@@ -90,7 +90,7 @@ export default function Attendance() {
   const [rows, setRows] = useState([]);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/attendance/${globalState.Employee_id}`, {
+      .get(`/attendance/${globalState.Employee_id}`, {
         params: {
           date: calDate,
         },
@@ -304,6 +304,3 @@ export default function Attendance() {
     </Page>
   );
 }
-Attendance.getLayout = (page: ReactElement) => (
-  <UserDashboardLayout>{page}</UserDashboardLayout>
-);

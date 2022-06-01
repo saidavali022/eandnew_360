@@ -116,7 +116,7 @@ const Documents = (props) => {
                   <Typography>
                     {value.length > 3 && (
                       <Typography>
-                        <NextLink href={"http://localhost:3001/" + value}>
+                        <NextLink href={"#" + value}>
                           <a target="_blank">
                             <InsertDriveFileSharpIcon
                               color="primary"
