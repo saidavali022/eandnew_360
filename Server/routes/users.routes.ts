@@ -39,15 +39,6 @@ router.post(
   ]),
   createUser
 );
-
 router.put("/data/:Id", updateUsersById);
-// app.get("/user/:empId", async (req: any, res: any) => {
-//   const data = await prisma.users.findMany({
-//     where: {
-//       employee_id: req.params.empId,
-//     },
-//   });
-//   res.status(200);
-//   res.send(data);
-// });
+
 export default router;
