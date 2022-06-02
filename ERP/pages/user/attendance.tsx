@@ -144,6 +144,7 @@ export default function Attendance() {
       field: "breaks",
       headerName: "Breaks",
       minWidth: 150,
+      maxWidth: 250,
       type: "string",
       flex: 1,
       renderCell: (params: GridRenderCellParams) =>
@@ -173,7 +174,6 @@ export default function Attendance() {
       field: "over_time",
       headerName: "Over Time",
       minWidth: 90,
-      flex: 1,
       valueGetter: (params: GridValueGetterParams) => {
         // return fdifferenceInMinutes(params.row.shift_out, params.row.shift_in);
         if (params.row.log_out == null) {
@@ -223,7 +223,6 @@ export default function Attendance() {
       field: "total_available_time",
       headerName: "Total Available Time",
       minWidth: 150,
-      flex: 1,
       valueGetter: (params: GridValueGetterParams) => {
         return fDistanceInHrsAndMinutes(params.row.log_out, params.row.log_in);
       },

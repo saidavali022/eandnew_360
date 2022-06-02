@@ -21,12 +21,12 @@ import {
   fAddHours,
 } from "@utils/formatTime";
 import NextLink from "next/link";
-import { getSession, useSession } from "next-auth/react";
 import { IBreak } from "@utils/interfaces/common";
 // material
 import {
   Card,
   Stack,
+  Box,
   Grid,
   Container,
   Typography,
@@ -54,45 +54,15 @@ import {
   renderBreakPills,
   getTotalBreakTime,
 } from "@utils/pillColor";
+import axios from "@utils/defaultImports";
 
-const rows = [
-  {
-    id: "e69d9e5d-1aca-55ab-918f-faf1991b0090",
-    log_in: "2022-04-12T02:30:45.738Z",
-    log_out: "2022-04-12T12:50:45.738Z",
-    employee_id: "END1111",
-    breaks: [
-      {
-        break_start: "2022-04-12T02:30:00.000Z",
-        break_end: "2022-04-12T02:45:45.738Z",
-      },
-      {
-        break_start: "2022-04-12T05:00:00.000Z",
-        break_end: "2022-04-12T05:45:45.738Z",
-      },
-    ],
-  },
-  {
-    id: "e69d9e5d-1aca-55ab-918f-faf1991b0091",
-    log_in: "2022-04-13T02:30:45.738Z",
-    log_out: "2022-04-13T12:50:45.738Z",
-    employee_id: "END1111",
-    breaks: [
-      {
-        break_start: "2022-04-13T02:30:00.000Z",
-        break_end: "2022-04-13T02:45:45.738Z",
-      },
-      {
-        break_start: "2022-04-13T05:00:00.000Z",
-        break_end: "2022-04-13T05:50:45.738Z",
-      },
-    ],
-  },
-];
 interface Employee {
-  id: string;
-  sudo_name: string;
-  name: string;
+  id?: string;
+  employee_id?: string;
+  username?: string;
+  sudo_name?: string;
+  name?: string;
+  department?: string;
 }
 
 function sleep(delay = 0) {
@@ -135,45 +105,51 @@ const EmployeesList = [
 ];
 
 export default function Attendance() {
-  const globalState = useSelector((state) => state.globalState);
-  const [presentUser, setPresentUser] = useState({});
+  const [presentUser, setPresentUser] = useState<Employee>({});
   const [calDate, setCalDate] = useState<Date | null>(new Date());
-  const [designation, setDesignation] = useState("");
-  const [employeeId, setEmployeeId] = useState("END1111");
-  const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<readonly Employee[]>([]);
-  const loading = open && options.length === 0;
-  const handleUserSelect = (event: SelectChangeEvent) => {
-    setEmployeeId(event.target.value);
+  const [inputValue, setInputValue] = useState("");
+  const [users, setUsers] = useState<Employee[]>([]);
+  const [value, setValue] = useState<string | null>(null);
+  const [rows, setRows] = useState([]);
+
+  const handleUserSelect = (
+    event: SelectChangeEvent,
+    newValue: Employee | null
+  ) => {
+    // console.info("new value", newValue);
+    console.info("new value", newValue?.username);
+    setPresentUser(newValue);
+    setValue(newValue?.username);
   };
-  // useEffect(() => {
-  //   if (!open) {
-  //     setOptions([]);
-  //   }
-  // }, [open]);
-  useEffect(() => {
-    let active = true;
-
-    if (!loading) {
-      return undefined;
-    }
-
-    (async () => {
-      // await sleep(1e3); // For demo purposes.
-
-      if (active) {
-        setOptions([...EmployeesList]);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [loading]);
 
   const handleCalDateChange = (newValue: Date | null) => {
     setCalDate(newValue);
   };
+
+  useEffect(() => {
+    if (presentUser.employee_id != null) {
+      axios
+        .get(`/attendance/${presentUser.employee_id}`, {
+          params: {
+            date: calDate,
+          },
+        })
+        .then((res: any) => {
+          console.info("api response -", res);
+          setRows(res.data);
+        })
+        .catch((err: any) => {
+          console.error(err);
+        });
+    }
+  }, [presentUser, calDate]);
+
+  useEffect(() => {
+    //getUsers
+    axios.get("/users/info").then((res: any) => {
+      setUsers(res.data);
+    });
+  }, []);
 
   const columns: GridColDef[] = [
     {
@@ -241,12 +217,11 @@ export default function Attendance() {
       minWidth: 90,
       flex: 1,
       valueGetter: (params: GridValueGetterParams) => {
-        // return fdifferenceInMinutes(params.row.shift_out, params.row.shift_in);
         if (params.row.log_out == null) {
           return "-";
         }
 
-        let department = globalState?.department;
+        let department = presentUser?.department;
         const shiftMinutes = fdifferenceInMinutes(
           params.row.shift_out,
           params.row.shift_in
@@ -335,11 +310,11 @@ export default function Attendance() {
 
         <Grid container spacing={2} sx={{ paddingBottom: 2 }}>
           <Grid item>
-            <ButtonBase sx={{ width: 100, height: 100 }}>
+            <ButtonBase sx={{ width: 80, height: 80 }}>
               <Avatar
                 alt="Robert Smith"
                 src="/static/images/avatar/1.jpg"
-                sx={{ width: 100, height: 100 }}
+                sx={{ width: 80, height: 80 }}
               />
             </ButtonBase>
           </Grid>
@@ -359,37 +334,34 @@ export default function Attendance() {
           <Grid item xs={12} sm container>
             <Grid item xs={12} md="auto" sx={{ padding: 2 }}>
               <Autocomplete
-                id="asynchronous-demo"
-                sx={{ width: 300 }}
-                open={open}
-                onOpen={() => {
-                  setOpen(true);
-                }}
-                onClose={() => {
-                  setOpen(false);
-                }}
-                isOptionEqualToValue={(option, value) =>
-                  option.sudo_name === value.sudo_name
-                }
-                value={employeeId}
+                id="user-select"
+                sx={{ minWidth: 300 }}
+                options={users}
+                autoHighlight
+                getOptionLabel={(option) => option.username}
                 onChange={handleUserSelect}
-                getOptionLabel={(option) => option.sudo_name}
-                options={options}
-                loading={loading}
+                value={value}
+                inputValue={inputValue}
+                renderOption={(props, option) => (
+                  <Box
+                    component="li"
+                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                    {...props}
+                  >
+                    <Avatar
+                      alt={option.username}
+                      src="/static/images/avatar/1.jpg"
+                      sx={{ width: 20, height: 20 }}
+                    />
+                    {option.username} - {option.employee_id}
+                  </Box>
+                )}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label="Employee"
                     InputProps={{
                       ...params.InputProps,
-                      endAdornment: (
-                        <>
-                          {loading ? (
-                            <CircularProgress color="inherit" size={20} />
-                          ) : null}
-                          {params.InputProps.endAdornment}
-                        </>
-                      ),
                     }}
                   />
                 )}
