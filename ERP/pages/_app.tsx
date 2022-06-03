@@ -5,7 +5,7 @@ import type { AppProps } from "next/app";
 import ThemeConfig from "@theme/index";
 import { useRouter } from "next/router";
 import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
-import { SessionProvider } from "next-auth/react";
+// import { SessionProvider } from "next-auth/react";
 import DashboardLayout from "@layouts/dashboard";
 import UserDashboardLayout from "@layouts/userdashboard";
 import HrDashboardLayout from "@layouts/hrdashboard";
@@ -40,7 +40,7 @@ const MyApp: React.FunctionComponent<AppPropsWithLayout> = (props) => {
   const path = router.route.split("/");
   const {
     Component,
-    pageProps: { session, ...pageProps },
+    pageProps: { ...pageProps },
   } = props;
   const pageLayout = Component.getLayout || ((page) => page);
   // if (Component.getLayout) {
@@ -49,14 +49,14 @@ const MyApp: React.FunctionComponent<AppPropsWithLayout> = (props) => {
       <>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <SessionProvider session={session}>
-              <ThemeConfig>
-                <UserDashboardLayout>
-                  <Component {...pageProps} />
-                  {ToastContainer_box}
-                </UserDashboardLayout>
-              </ThemeConfig>
-            </SessionProvider>
+            {/* <SessionProvider session={session}> */}
+            <ThemeConfig>
+              <UserDashboardLayout>
+                <Component {...pageProps} />
+                {ToastContainer_box}
+              </UserDashboardLayout>
+            </ThemeConfig>
+            {/* </SessionProvider> */}
           </PersistGate>
         </Provider>
       </>
@@ -68,14 +68,14 @@ const MyApp: React.FunctionComponent<AppPropsWithLayout> = (props) => {
       <>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <SessionProvider session={session}>
-              <ThemeConfig>
-                <DashboardLayout>
-                  <Component {...pageProps} />
-                  {ToastContainer_box}
-                </DashboardLayout>
-              </ThemeConfig>
-            </SessionProvider>
+            {/* <SessionProvider session={session}> */}
+            <ThemeConfig>
+              <DashboardLayout>
+                <Component {...pageProps} />
+                {ToastContainer_box}
+              </DashboardLayout>
+            </ThemeConfig>
+            {/* </SessionProvider> */}
           </PersistGate>
         </Provider>
       </>
@@ -87,14 +87,14 @@ const MyApp: React.FunctionComponent<AppPropsWithLayout> = (props) => {
       <>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <SessionProvider session={session}>
-              <ThemeConfig>
-                <HrDashboardLayout>
-                  <Component {...pageProps} />
-                  {ToastContainer_box}
-                </HrDashboardLayout>
-              </ThemeConfig>
-            </SessionProvider>
+            {/* <SessionProvider session={session}> */}
+            <ThemeConfig>
+              <HrDashboardLayout>
+                <Component {...pageProps} />
+                {ToastContainer_box}
+              </HrDashboardLayout>
+            </ThemeConfig>
+            {/* </SessionProvider> */}
           </PersistGate>
         </Provider>
       </>
@@ -104,11 +104,11 @@ const MyApp: React.FunctionComponent<AppPropsWithLayout> = (props) => {
   return (
     <>
       <Provider store={store}>
-        <SessionProvider session={session}>
-          <ThemeConfig>
-            <Component {...pageProps} />
-          </ThemeConfig>
-        </SessionProvider>
+        {/* <SessionProvider session={session}> */}
+        <ThemeConfig>
+          <Component {...pageProps} />
+        </ThemeConfig>
+        {/* </SessionProvider> */}
       </Provider>
     </>
   );

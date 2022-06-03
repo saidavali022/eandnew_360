@@ -11,7 +11,8 @@ import {
 } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { useSelector } from "react-redux";
-import axios from "@utils/defaultImports";
+import axios, { toast } from "@utils/defaultImports";
+
 const AttendanceStatus = () => {
   const globalState = useSelector((state) => state.globalState);
   const [availabilityStatus, setAvailabilityStatus] = useState("unavailable");
@@ -20,9 +21,14 @@ const AttendanceStatus = () => {
       .put(`/attendance/${globalState.Employee_id}/availability`, {
         status: event.target.value,
       })
-      .then((res) => {
-        console.info("update status to - ", event.target.value);
+      .then((res: any) => {
         setAvailabilityStatus(res.data.status);
+      })
+      .catch((error: any) => {
+        console.info(error);
+        toast.error(error.response.data.message, {
+          theme: "colored",
+        });
       });
   };
   useEffect(() => {
@@ -51,7 +57,7 @@ const AttendanceStatus = () => {
           label="Status"
           onChange={handleAvailabilityChange}
         >
-          <MenuItem value="notavailable">
+          <MenuItem value="notavailable" disabled>
             <em>Not Available</em>
           </MenuItem>
           <MenuItem value="available">Available</MenuItem>

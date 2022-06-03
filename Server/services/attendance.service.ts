@@ -1,7 +1,8 @@
 import prisma from "../utils/prisma";
-import { addDays, format, set, addHours } from "date-fns";
+import { addDays, format, set, addHours, differenceInMinutes } from "date-fns";
 import { attendance_available_status } from "@prisma/client";
 import * as ShiftService from "../services/shifts.service";
+
 export const getUserAttendance = async (userId: string, date: string) => {
   try {
     const user: any = await prisma.users.findUnique({
@@ -65,6 +66,18 @@ export const markUserAttendance = async (userId: string) => {
       shift_in = userShift.shift_in;
       shift_out = userShift.shift_out;
     }
+    const late_minutes = differenceInMinutes(shift_in, new Date());
+    let login_penalty;
+    const penalty = await prisma.policies_attedance.findFirst({
+      where: {
+        start_minutes: {
+          gte: late_minutes,
+        },
+        end_minutes: {
+          lte: late_minutes,
+        },
+      },
+    });
 
     const markAttendance = await prisma.attendance.create({
       data: {
@@ -92,6 +105,7 @@ export const updateUserAvailibilityStatus = async (
   try {
     let shift_time_in = new Date();
     let shift_time_out = new Date();
+
     if (status == "break") {
       //Break start
       const attendanceUpdate = await prisma.attendance.update({
@@ -131,7 +145,7 @@ export const updateUserAvailibilityStatus = async (
             id: attendanceId,
           },
           data: {
-            status: attendance_available_status.available,
+            status,
             breaks: {
               update: {
                 where: {
@@ -144,6 +158,21 @@ export const updateUserAvailibilityStatus = async (
         });
         return attendanceUpdate;
       }
+    }
+
+    if (
+      (presentAttendanceStatus == "available" && status == "salah") ||
+      (presentAttendanceStatus == "salah" && status == "available")
+    ) {
+      const attendanceUpdate = await prisma.attendance.update({
+        where: {
+          id: parseInt(attendanceId),
+        },
+        data: {
+          status,
+        },
+      });
+      return attendanceUpdate;
     }
   } catch (error) {
     console.error(error);

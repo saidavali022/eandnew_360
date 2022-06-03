@@ -1,18 +1,6 @@
-import prisma from "../utils/prisma";
-import { attendance_available_status } from "@prisma/client";
 import Express, { Request, Response, NextFunction } from "express";
 import * as AttendanceService from "../services/attendance.service";
-import * as ShiftService from "../services/shifts.service";
-import {
-  set,
-  add,
-  addHours,
-  addMinutes,
-  addMilliseconds,
-  setMilliseconds,
-  setSeconds,
-  format,
-} from "date-fns";
+import { attendance_available_status } from "@prisma/client";
 
 interface TypedRequest extends Request {
   params: {
@@ -121,8 +109,6 @@ export const updateUserAvailibilityStatus = async (
 ) => {
   const { empId } = req.params;
   const { status } = req.body;
-  let shift_time_in = new Date();
-  let shift_time_out = new Date();
   let attendId;
   try {
     if (status == "unavailable") {
@@ -144,41 +130,17 @@ export const updateUserAvailibilityStatus = async (
       throw new Error("mark attendance before requesting for update of status");
     }
 
-    // get user shift timings
-    const userShift = await ShiftService.getUserShift(empId);
-
-    if (userShift != null) {
-      shift_time_in = userShift.shift_in;
-      shift_time_out = userShift.shift_out;
-    }
-
     if (
       presentUserStatus.status == "available" ||
       presentUserStatus.status == "break" ||
       presentUserStatus.status == "salah"
     ) {
-      //get get attendacne id
-      const date_in = new Date(format(new Date(), "yyyy-MM-dd"));
-      const an_hour_before_shift_log_in = set(shift_time_in, {
-        hours: shift_time_in.getHours() - 1,
-      });
+      const userAttendance = await AttendanceService.userTodayAttendance(empId);
 
-      const attendance = await prisma.attendance.findFirst({
-        where: {
-          employee_id: empId,
-          date_in,
-          log_in: {
-            gte: an_hour_before_shift_log_in,
-          },
-        },
-        orderBy: {
-          created_at: "desc",
-        },
-      });
-      if (attendance == null) {
+      if (userAttendance == null) {
         throw new Error("Mark Attendance First before requesting for a break");
       }
-      attendId = attendance.id;
+      attendId = userAttendance.id;
     }
 
     const updatedAttendanceStatus =
@@ -192,6 +154,7 @@ export const updateUserAvailibilityStatus = async (
     res.status(200).json(updatedAttendanceStatus);
     return;
   } catch (error: any) {
+    console.error(error.message);
     console.error(error);
     res.status(400).json({ message: error.message });
     return;

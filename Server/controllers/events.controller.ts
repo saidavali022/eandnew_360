@@ -23,8 +23,10 @@ export const getUserEvents = async (req: IEventRequest, res: Response) => {
   try {
     const events = await EventService.getUserEvents(userId, { start, end });
     return res.status(200).json(events);
-  } catch (e: any) {
-    return res.status(400).json({ status: 400, message: e.message });
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
+    return;
   }
 };
 
@@ -50,7 +52,7 @@ export const createEvent = async (req: IEventRequest, res: Response) => {
     return;
   } catch (error: any) {
     console.error(error);
-    res.status(400).json(error);
+    res.status(400).json({ error, message: error.message });
     return;
   }
 };
@@ -61,8 +63,7 @@ export const updateEvent = async (req: Request, res: Response) => {
   const { start, end, attendees, title, description, isAllDay } = req.body;
 
   if (start == null || end == null) {
-    res.status(400).json({ message: "start & end cannot be empty" });
-    return;
+    throw new Error("start & end cannot be empty");
   }
 
   try {
@@ -77,8 +78,10 @@ export const updateEvent = async (req: Request, res: Response) => {
     return res.status(200).json({
       events,
     });
-  } catch (e: any) {
-    return res.status(400).json({ status: 400, message: e.message });
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
+    return;
   }
 };
 
@@ -87,8 +90,10 @@ export const getUserEvent = async (req: Request, res: Response) => {
   try {
     const userEvent = await EventService.getUserEvent(userId, eventId);
     return res.status(200).json(userEvent);
-  } catch (e: any) {
-    return res.status(400).json({ status: 400, message: e.message });
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
+    return;
   }
 };
 
@@ -97,8 +102,10 @@ export const listAttendingEvents = async (req: Request, res: Response) => {
   try {
     const attendingEvents = await EventService.getAttendingEvents(userId);
     return res.status(200).json(attendingEvents);
-  } catch (e: any) {
-    return res.status(400).json({ status: 400, message: e.message });
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
+    return;
   }
 };
 
@@ -107,8 +114,9 @@ export const deleteEvent = async (req: Request, res: Response) => {
   try {
     const events = await EventService.deleteEvent(eventId, userId);
     return res.status(200).json(events);
-  } catch (e: any) {
-    console.error(e);
-    return res.status(400).json({ status: 400, message: e.message });
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
+    return;
   }
 };

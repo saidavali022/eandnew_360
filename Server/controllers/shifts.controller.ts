@@ -1,61 +1,72 @@
-import {
-  addMinutes,
-  subMinutes,
-  subDays,
-  addDays,
-  addHours,
-  format,
-  formatRFC3339,
-  set,
-} from "date-fns";
-import prisma from "../utils/prisma";
 import Express, { Request, Response, NextFunction } from "express";
-interface TypedRequest extends Request {
+import * as ShiftService from "../services/shifts.service";
+
+interface IShiftRequest extends Request {
   params: {
     empId: string;
   };
   query: {
     date: string;
   };
+  body: {
+    shift_in: string;
+    shift_out: string;
+  };
 }
 
-export const getUserShifts = async (req: TypedRequest, res: Response) => {
+export const getAllShifts = async (req: IShiftRequest, res: Response) => {
+  try {
+    const shifts = await ShiftService.getAllShifts();
+    res.status(200).json(shifts);
+    return;
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
+    return;
+  }
+};
+export const getUserShift = async (req: IShiftRequest, res: Response) => {
   const { empId } = req.params;
   try {
-    const userShifts = await prisma.shift_timings.findMany({
-      where: {
-        employee_id: empId,
-      },
-      orderBy: {
-        created_at: "desc",
-      },
-    });
-    res.status(200).json(userShifts);
+    const userShift = await ShiftService.getUserShift(empId);
+    res.status(200).json(userShift);
     return;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    res.status(400).json(error);
+    res.status(400).json({ error, message: error.message });
     return;
   }
 };
 
-export const createUserShift = async (req: TypedRequest, res: Response) => {
+export const getUserShifts = async (req: IShiftRequest, res: Response) => {
+  const { empId } = req.params;
+  const { date } = req.query;
+  try {
+    const userShifts = await ShiftService.getUserShifts(empId, date);
+
+    res.status(200).json(userShifts);
+    return;
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error, message: error.message });
+    return;
+  }
+};
+
+export const createUserShift = async (req: IShiftRequest, res: Response) => {
   const { empId } = req.params;
   const { shift_in, shift_out } = req.body;
   try {
-    console.info(shift_in, shift_out);
-    const userShifts = await prisma.shift_timings.create({
-      data: {
-        employee_id: empId,
-        shift_in: new Date(shift_in),
-        shift_out: new Date(shift_out),
-      },
-    });
-    res.status(200).json(userShifts);
+    const newUserShift = await ShiftService.createUserShift(
+      empId,
+      shift_in,
+      shift_out
+    );
+    res.status(201).json(newUserShift);
     return;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    res.status(400).json(error);
+    res.status(400).json({ error, message: error.message });
     return;
   }
 };
