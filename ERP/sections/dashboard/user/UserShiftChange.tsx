@@ -118,7 +118,7 @@ export default function UserShiftChange() {
     {
       field: "employee_id",
       headerName: "EMP ID",
-      minWidth: 90,
+      minWidth: 250,
       type: "string",
     },
     {
@@ -127,7 +127,7 @@ export default function UserShiftChange() {
       minWidth: 150,
     },
     {
-      field: "shifts",
+      field: "shift_in",
       headerName: "Shift In",
       width: 90,
       valueGetter: (params: GridValueGetterParams) => {
@@ -135,7 +135,7 @@ export default function UserShiftChange() {
       },
     },
     {
-      field: "shifts",
+      field: "shift_out",
       headerName: "Shift Out",
       width: 90,
       valueGetter: (params: GridValueGetterParams) => {
