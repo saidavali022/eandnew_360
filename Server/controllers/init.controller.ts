@@ -106,17 +106,22 @@ export const initTables = async (req: TypedRequest, res: Response) => {
           end_minutes: 90,
           point: 4,
           type: "late_login",
-          lop: "half-day",
+          lop: "half_day",
         },
         {
           start_minutes: 15,
           end_minutes: 30,
           point: 0.5,
           type: "early_logoff",
-          lop: "half-day",
+          lop: "half_day",
         },
-        { start_minutes: 31, end_minutes: 999, point: 4, type: "early_logoff" },
-        // { start_minutes: 999, end_minutes: 999, point: 5, type: "absent" },
+        {
+          start_minutes: 31,
+          end_minutes: 510,
+          point: 4,
+          type: "early_logoff",
+        },
+        { start_minutes: 510, end_minutes: 1380, point: 5, type: "absent" },
       ],
     });
 

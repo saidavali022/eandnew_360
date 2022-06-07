@@ -20,6 +20,26 @@ model attendance {
   users       users?                      @relation(fields: [employee_id], references: [employee_id], map: "Attendance_user_id_fkey")
   breaks      breaks[]
   status      attendance_available_status @default(unavailable)
+  penalties   attendance_penalties[]
+}
+
+model attendance_penalties {
+  id            Int                        @id @default(autoincrement()) @db.UnsignedInt
+  points        Float                      @default(0)
+  lop           lop_types?
+  type          attendance_penalties_types
+  attendance_id Int                        @db.UnsignedInt
+  attendance    attendance                 @relation(fields: [attendance_id], references: [id])
+}
+
+enum lop_types {
+  half_day
+  full_day
+}
+
+enum attendance_penalties_types {
+  late_login
+  early_logoff
 }
 
 enum attendance_available_status {

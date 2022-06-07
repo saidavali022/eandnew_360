@@ -1,14 +1,31 @@
 import prisma from "../utils/prisma";
 
-export const getAllShifts = async () => {
+export const getAllUsersShift = async (department: string | undefined) => {
   try {
-    const shifts = await prisma.shift_timings.findMany({
-      distinct: ["employee_id"],
-      orderBy: {
-        created_at: "desc",
+    const usersShift = await prisma.users.findMany({
+      where: {
+        department,
+      },
+      select: {
+        id: true,
+        username: true,
+        employee_id: true,
+        first_name: true,
+        last_name: true,
+        shifts: {
+          take: 1,
+          orderBy: {
+            created_at: "desc",
+          },
+          select: {
+            shift_in: true,
+            shift_out: true,
+            created_at: true,
+          },
+        },
       },
     });
-    return shifts;
+    return usersShift;
   } catch (error) {}
 };
 
@@ -58,4 +75,23 @@ export const createUserShift = async (
     });
     return userShift;
   } catch (error) {}
+};
+
+export const createUsersShift = async (
+  userIds: string[],
+  shift_in: string,
+  shift_out: string
+) => {
+  try {
+    const userShift = await prisma.shift_timings.createMany({
+      data: userIds.map((userId) => ({
+        employee_id: userId,
+        shift_in: new Date(shift_in),
+        shift_out: new Date(shift_out),
+      })),
+    });
+    return userShift;
+  } catch (error: any) {
+    throw new Error("Error While create users shifts");
+  }
 };

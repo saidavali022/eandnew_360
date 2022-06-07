@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import NextLink from "next/link";
+import { useSelector } from "react-redux";
 // material
 import { styled } from "@mui/material/styles";
 import {
@@ -52,7 +53,7 @@ DashboardSidebar.propTypes = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useRouter();
-
+  const globalState = useSelector((state) => state.globalState);
   const isDesktop = useResponsive("up", "lg");
 
   useEffect(() => {
@@ -84,10 +85,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
               <Avatar src={account.photoURL} alt="photoURL" />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                  {account.displayName}
+                  {globalState.Employee_id}
                 </Typography>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {account.role}
+                  {globalState.role}
                 </Typography>
               </Box>
             </AccountStyle>

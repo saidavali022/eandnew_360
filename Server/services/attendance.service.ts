@@ -67,7 +67,8 @@ export const markUserAttendance = async (userId: string) => {
       shift_out = userShift.shift_out;
     }
     const late_minutes = differenceInMinutes(shift_in, new Date());
-    let login_penalty;
+    let login_penalty = 0;
+    let lop_penalty = null;
     const penalty = await prisma.policies_attedance.findFirst({
       where: {
         start_minutes: {
@@ -79,6 +80,11 @@ export const markUserAttendance = async (userId: string) => {
       },
     });
 
+    if (penalty != null) {
+      login_penalty = penalty.point;
+      lop_penalty = penalty.lop;
+    }
+
     const markAttendance = await prisma.attendance.create({
       data: {
         employee_id: userId,
@@ -87,8 +93,11 @@ export const markUserAttendance = async (userId: string) => {
         date_in: new Date(),
         log_in: new Date(),
         status: attendance_available_status.available,
+        points: login_penalty,
+        lop: lop_penalty,
       },
     });
+
     return markAttendance;
   } catch (error) {
     console.error(error);

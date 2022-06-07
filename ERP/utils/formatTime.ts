@@ -18,10 +18,16 @@ import {
  * @returns string
  */
 export function fDate(date: string) {
+  if (date == null || date == undefined) {
+    return "-";
+  }
   return format(new Date(date), "dd-MM-yyyy");
 }
 
 export function fTime(datetime: string) {
+  if (datetime == null || datetime == undefined) {
+    return "-";
+  }
   return format(new Date(datetime), "hh:mm a");
 }
 /**
@@ -29,8 +35,11 @@ export function fTime(datetime: string) {
  * @param date
  * @returns string
  */
-export function fDateTime(date: string) {
-  return format(new Date(date), "dd MMM yyyy HH:mm");
+export function fDateTime(datetime: string) {
+  if (datetime == null || datetime == undefined) {
+    return "-";
+  }
+  return format(new Date(datetime), "dd MMM yyyy HH:mm");
 }
 
 /**
@@ -38,8 +47,11 @@ export function fDateTime(date: string) {
  * @param date
  * @returns string
  */
-export function fDateTimeSuffix(date: Date) {
-  return format(new Date(date), "dd/MM/yyyy hh:mm p");
+export function fDateTimeSuffix(datetime: Date) {
+  if (datetime == null || datetime == undefined) {
+    return "-";
+  }
+  return format(new Date(datetime), "dd/MM/yyyy p");
 }
 
 /**
@@ -47,8 +59,11 @@ export function fDateTimeSuffix(date: Date) {
  * @param date
  * @returns string
  */
-export function fToNow(date: Date) {
-  return formatDistanceToNow(new Date(date), {
+export function fToNow(datetime: Date) {
+  if (datetime == null || datetime == undefined) {
+    return "-";
+  }
+  return formatDistanceToNow(new Date(datetime), {
     addSuffix: true,
   });
 }
@@ -99,6 +114,7 @@ export function fDistanceInHrsAndMinutes(dateLeft: string, dateRight: string) {
   }
 
   let minutes = differenceInMinutes(dateEnd, dateStart);
+
   if (minutes > 0) {
     time += `${minutes} Min`;
   }

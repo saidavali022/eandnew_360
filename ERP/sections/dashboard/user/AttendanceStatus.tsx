@@ -10,12 +10,14 @@ import {
   InputLabel,
 } from "@mui/material";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios, { toast } from "@utils/defaultImports";
 
 const AttendanceStatus = () => {
   const globalState = useSelector((state) => state.globalState);
+  const dispatch = useDispatch();
   const [availabilityStatus, setAvailabilityStatus] = useState("unavailable");
+
   const handleAvailabilityChange = (event: SelectChangeEvent) => {
     axios
       .put(`/attendance/${globalState.Employee_id}/availability`, {
@@ -23,6 +25,7 @@ const AttendanceStatus = () => {
       })
       .then((res: any) => {
         setAvailabilityStatus(res.data.status);
+        dispatch({ type: "availability", payload: res.data.status });
       })
       .catch((error: any) => {
         console.info(error);
@@ -31,14 +34,13 @@ const AttendanceStatus = () => {
         });
       });
   };
+
   useEffect(() => {
     axios
       .get(`/attendance/${globalState.Employee_id}/availability`)
       .then((res: any) => {
-        console.info("res - availibility - ", res.data);
         if (res.data.status == "unavailable") {
           axios.post(`/attendance/${globalState.Employee_id}`).then((res) => {
-            console.info("mark attendance - ", res.data);
             setAvailabilityStatus(res.data.status);
           });
         } else {
@@ -46,6 +48,7 @@ const AttendanceStatus = () => {
         }
       });
   }, []);
+
   return (
     <>
       <FormControl sx={{ m: 1, minWidth: 150 }}>

@@ -1,7 +1,16 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 // material
 import { alpha, styled } from "@mui/material/styles";
-import { Box, Stack, AppBar, Toolbar, IconButton } from "@mui/material";
+import {
+  Box,
+  Stack,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
 // components
 import Iconify from "@components/Iconify";
 //
@@ -24,7 +33,7 @@ const RootStyle = styled(AppBar)(({ theme }) => ({
   [theme.breakpoints.up("lg")]: {
     width: `calc(100% - ${DRAWER_WIDTH + 1}px)`,
   },
-}));
+})) as typeof AppBar;
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
   minHeight: APPBAR_MOBILE,
@@ -32,7 +41,7 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
     minHeight: APPBAR_DESKTOP,
     padding: theme.spacing(0, 5),
   },
-}));
+})) as typeof Toolbar;
 
 // ----------------------------------------------------------------------
 
@@ -45,9 +54,21 @@ export default function DashboardNavbar({
 }: {
   onOpenSidebar: Function;
 }) {
+  const globalState = useSelector((state) => state.globalState);
+
+  console.info(globalState);
+  const [availability, setAvailability] = useState("available");
+  const [bgColor, setBgColor] = useState("red");
+
+  // if (globalState.available == "break") {
+  //   setBgColor("green");
+  // }
+  // if (globalState.available == "salah") {
+  //   setBgColor("brown");
+  // }
   return (
     <RootStyle>
-      <ToolbarStyle>
+      <ToolbarStyle sx={{ backgroundColor: bgColor }}>
         <IconButton
           onClick={onOpenSidebar}
           sx={{ mr: 1, color: "text.primary", display: { lg: "none" } }}
@@ -55,8 +76,19 @@ export default function DashboardNavbar({
           <Iconify icon="eva:menu-2-fill" />
         </IconButton>
 
-        <Searchbar />
-        <Box sx={{ flexGrow: 1 }} />
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography
+            sx={{
+              fontWeight: "bold",
+              textAlign: "center",
+              color: "green",
+              textTransform: "uppercase",
+            }}
+            variant="h4"
+          >
+            {availability}
+          </Typography>
+        </Box>
 
         <Stack
           direction="row"

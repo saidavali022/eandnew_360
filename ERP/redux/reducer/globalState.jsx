@@ -16,10 +16,10 @@ const globalState = (state = initialState, action) => {
         username: action.payload.username,
       };
     }
-    case "users": {
+    case "availability": {
       return {
         ...state,
-        users: action.payload.users,
+        available: action.payload.status,
       };
     }
     default:

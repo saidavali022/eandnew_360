@@ -2,11 +2,13 @@ import { Router } from "express";
 import {
   getUserShifts,
   createUserShift,
-  getAllShifts,
+  getAllUsersShift,
+  createUsersShift,
 } from "../controllers/shifts.controller";
 
 const router = Router();
-router.get("/", getAllShifts);
+router.get("/", getAllUsersShift);
+router.post("/", createUsersShift);
 router.get("/:empId", getUserShifts);
 router.post("/:empId", createUserShift);
 
